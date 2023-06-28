@@ -3,17 +3,27 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Container } from "react-bootstrap";
 import './App.css';
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import SignupPage from "./pages/SingupPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
 
     return (
-        <><Header/>
+        <Router>
+            <Header/>
             <main>
                 <Container>
-            <h1>React app is working!</h1>
+                    <Routes>
+                        <Route path='/' element={<HomePage />} />
+                        <Route path='/signup' element={<SignupPage />} />
+                        <Route path='/login' element={<LoginPage />} />
+                    </Routes>
                 </Container>
             </main>
-            <Footer/></>
+            <Footer/>
+        </Router>
     );
 }
 
