@@ -1,8 +1,7 @@
+
 const HomePage = () => {
     return (
-        <div>
-            This is a home page
-        </div>
+        <h1>Welcome to the Powerboard!</h1>
     )
 }
 export default HomePage;
