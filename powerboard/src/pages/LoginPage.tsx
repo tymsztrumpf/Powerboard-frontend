@@ -2,15 +2,27 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {SyntheticEvent, useState} from "react";
 import FormContainer from "../components/FormContainer";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import {AuthApi} from "../api/AuthApi";
 
 const LoginPage = () => {
 
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const submitHandler = (e: SyntheticEvent) => {
+    const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
-        console.log("submitted")
+
+        const response = await AuthApi.signIn({
+            email: email,
+            password: password,
+        })
+
+        localStorage.setItem('token', response.data.token);
+        navigate('/');
+        toast.success("Logged in");
     }
 
     return (

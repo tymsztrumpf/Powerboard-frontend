@@ -1,4 +1,4 @@
 export type SignInResponse = {
-    email:string;
+    email: string;
     token: string;
 }

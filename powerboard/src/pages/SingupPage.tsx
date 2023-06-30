@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import FormContainer from "../components/FormContainer";
 import {SyntheticEvent, useState} from "react";
 import { useNavigate } from "react-router-dom";
+import {AuthApi} from "../api/AuthApi";
 
 const SignupPage = () => {
 
@@ -15,15 +16,11 @@ const SignupPage = () => {
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
 
-        await fetch('http://localhost:8080/api/v1/auth/register', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                firstName,
-                lastName,
-                email,
-                password
-            })
+        await AuthApi.signUp({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
         })
 
         navigate('/login');

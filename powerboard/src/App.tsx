@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Container } from "react-bootstrap";
@@ -7,6 +7,9 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SingupPage";
 import LoginPage from "./pages/LoginPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {AppRouter} from "./router/AppRouter";
 
 function App() {
 
@@ -15,11 +18,8 @@ function App() {
             <Header/>
             <main>
                 <Container>
-                    <Routes>
-                        <Route path='/' element={<HomePage />} />
-                        <Route path='/signup' element={<SignupPage />} />
-                        <Route path='/login' element={<LoginPage />} />
-                    </Routes>
+                    <AppRouter />
+                    <ToastContainer />
                 </Container>
             </main>
             <Footer/>
