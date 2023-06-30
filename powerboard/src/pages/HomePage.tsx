@@ -6,8 +6,6 @@ import {ACCESS_TOKEN} from "../constants/constants";
 const HomePage = () => {
     const [firstName, setFirstName] = useState('');
 
-
-
     const fetchUser = useCallback(async () => {
         try {
             const response = await UserApi.getUser();
