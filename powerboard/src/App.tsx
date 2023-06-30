@@ -3,18 +3,15 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Container } from "react-bootstrap";
 import './App.css';
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import SignupPage from "./pages/SingupPage";
-import LoginPage from "./pages/LoginPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {AppRouter} from "./router/AppRouter";
+import {withAxiosIntercepted} from "./hooks/withAxiosIntercepted";
 
 function App() {
 
     return (
-        <Router>
+        <>
             <Header/>
             <main>
                 <Container>
@@ -23,8 +20,8 @@ function App() {
                 </Container>
             </main>
             <Footer/>
-        </Router>
+      </>
     );
 }
 
-export default App;
+export default withAxiosIntercepted(App);

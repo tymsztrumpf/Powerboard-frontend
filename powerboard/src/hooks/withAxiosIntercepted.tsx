@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
+import axios, {AxiosRequestConfig, InternalAxiosRequestConfig} from "axios";
 import { ACCESS_TOKEN } from "../constants/constants";
 import { useNavigate } from "react-router-dom";
-import axios, { InternalAxiosRequestConfig } from 'axios';
-
 
 export const authorizedApi = axios.create();
 
@@ -42,6 +41,7 @@ export function withAxiosIntercepted<T extends JSX.IntrinsicAttributes>(
                     if (error.response.status === 401) {
                         navigate("/login");
                     }
+
                     return Promise.reject(error);
                 }
             );
