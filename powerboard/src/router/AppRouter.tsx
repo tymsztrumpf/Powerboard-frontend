@@ -3,6 +3,7 @@ import HomePage from "../pages/HomePage";
 import SignupPage from "../pages/SingupPage";
 import LoginPage from "../pages/LoginPage";
 import React from "react";
+import BoardsPage from "../pages/BoardsPage";
 
 export const AppRouter = () => {
     return (
@@ -10,6 +11,7 @@ export const AppRouter = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='/signup' element={<SignupPage />} />
             <Route path='/login' element={<LoginPage />} />
+            <Route path='/boards' element={<BoardsPage />} />
         </Routes>
     )
 }
