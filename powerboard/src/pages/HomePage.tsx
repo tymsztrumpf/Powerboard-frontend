@@ -23,9 +23,9 @@ const HomePage = () => {
     }, [fetchUser])
 
     return firstName ? (
-        <h1>Welcome {firstName} </h1>
+        <h1>Welcome to Powerboard, {firstName}! </h1>
     ) : (
-        <h1>Welcome to the BoardPro </h1>
+        <h1>Welcome to the Powerboard! </h1>
     )
 }
 

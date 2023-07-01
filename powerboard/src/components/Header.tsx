@@ -23,7 +23,7 @@ function Header() {
     return (
         <Navbar bg='dark' variant='dark' expand="lg" collapseOnSelect>
             <Container>
-                <Navbar.Brand href="/">BoardPro</Navbar.Brand>
+                <Navbar.Brand href="/">Powerboard</Navbar.Brand>
                 <DropdownButton variant="info" id="dropdown-basic-button" title="Create">
                     <Dropdown.Item href="#/action-1">New Board</Dropdown.Item>
                     <Container>

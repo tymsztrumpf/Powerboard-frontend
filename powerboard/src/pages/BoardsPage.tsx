@@ -3,13 +3,13 @@ import {BoardApi} from "../api/BoardApi";
 import {Card} from 'react-bootstrap';
 import {toast} from "react-toastify";
 import TestImage from '../resources/img/test.jpg';
-
-type Board = {
-    title: string;
-};
+import {useNavigate} from "react-router-dom";
+import BoardPage from "./BoardPage";
+import {BoardResponse} from "../api/BoardResponse";
 
 const BoardsPage = () => {
-    const [boards, setBoards] = useState<Board[]>([]);
+    const [boards, setBoards] = useState<BoardResponse[]>([]);
+    const navigate = useNavigate();
 
     const fetchBoards = useCallback(async () => {
         try {
@@ -33,7 +33,7 @@ const BoardsPage = () => {
             {boards.map((board, index) => (
                 <Card key={index}>
                     <Card.Img variant="top" src={TestImage} style={{ width: 'auto', height: '180px' }} />
-                    <Card.Body>
+                    <Card.Body onClick={() => navigate(`/board/${board.id}`)}>
                         <Card.Text>
                             {board.title}
                         </Card.Text>
