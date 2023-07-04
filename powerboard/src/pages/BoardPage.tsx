@@ -36,9 +36,9 @@ const BoardPage = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {cardLists.map((cardList, index) => (
-                <CardList key={index} title={cardList.title}/>
+                <CardList key={index} boardId={board?.id} cardList={cardList}/>
             ))}
-            <AddListButton  boardId={board?.id}/>
+            <AddListButton boardId={board?.id}/>
         </div>
     )
 }

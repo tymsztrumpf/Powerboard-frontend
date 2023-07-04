@@ -7,11 +7,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {AppRouter} from "./router/AppRouter";
 import {withAxiosIntercepted} from "./hooks/withAxiosIntercepted";
+import {UserContext, UserContextProvider} from "./context/UserContext";
 
 function App() {
 
     return (
-        <>
+        <UserContextProvider>
             <Header/>
             <main>
                 <Container>
@@ -20,7 +21,7 @@ function App() {
                 </Container>
             </main>
             <Footer/>
-      </>
+        </UserContextProvider>
     );
 }
 
