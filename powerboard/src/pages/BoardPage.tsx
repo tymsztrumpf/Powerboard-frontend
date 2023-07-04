@@ -3,16 +3,15 @@ import {useParams} from "react-router-dom";
 import {BoardApi} from "../api/BoardApi";
 import {toast} from "react-toastify";
 import {BoardResponse} from "../api/BoardResponse";
-import {Card} from "react-bootstrap";
 import './BoardPage.css';
-import HoverableCardText from "../components/HoverableCardText";
-import AddNewCard from "../components/AddNewCard";
-import Button from "react-bootstrap/Button";
 import AddListButton from "../components/AddListButton";
+import CardList from "../components/CardList";
+import {CardListResponse} from "../api/CardListResponse";
 
 const BoardPage = () => {
     const { id } = useParams();
     const [board, setBoard] = useState<BoardResponse | null>(null);
+    const [cardLists, setCardLists] = useState<CardListResponse[]>([]);
 
     const fetchBoard = useCallback(async () => {
         if (id) {
@@ -21,6 +20,7 @@ const BoardPage = () => {
                     boardId: id
                 });
                 setBoard(response.data);
+                setCardLists(response.data.cardLists)
                 console.log(board)
             } catch (error) {
                 toast.error("Błąd serwera");
@@ -34,41 +34,12 @@ const BoardPage = () => {
 
 
     return (
-
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-        <Card
-            bg={"dark"}
-            text={"white"}
-            style={{ width: '18rem', borderRadius: '15px',  marginRight: '2em'}}
-            className="mb-3"
-        >
-            <Card.Header>DO ZROBIENIA</Card.Header>
-            <Card.Body>
-                 <HoverableCardText  text={"TESTTESTTEST"} />
-                <HoverableCardText  text={"TESTTESTTEST"} />
-                <AddNewCard />
-            </Card.Body>
-        </Card>
-            <Card
-                bg={"dark"}
-                text={"white"}
-                style={{ width: '18rem', borderRadius: '15px' }}
-                className="mb-3"
-            >
-                <Card.Header>DO ZROBIENIA</Card.Header>
-                <Card.Body>
-                    <HoverableCardText  text={"TESTTESTTEST"} />
-                    <HoverableCardText  text={"TESTTESTTEST"} />
-                    <AddNewCard />
-                </Card.Body>
-            </Card>
-
-            <div style={{ width: '18rem', marginLeft: '1em' }}>
-                <AddListButton  boardId={board?.id}/>
-            </div>
-
+            {cardLists.map((cardList, index) => (
+                <CardList key={index} title={cardList.title}/>
+            ))}
+            <AddListButton  boardId={board?.id}/>
         </div>
-
     )
 }
 

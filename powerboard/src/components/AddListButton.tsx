@@ -44,7 +44,7 @@ const AddNewCardList = ({boardId}: Props) => {
 
     };
     return (
-        <div>
+        <div >
             {!showForm && (
                 <Button variant="success" onClick={handleButtonClick} style={{ width: '18rem', borderRadius: '2rem'}}>
                     Add Card
