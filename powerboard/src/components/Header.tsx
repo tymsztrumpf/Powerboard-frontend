@@ -3,15 +3,16 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {Dropdown, DropdownButton, FloatingLabel, Form} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import {SyntheticEvent, useContext, useState} from "react";
-import {AuthApi} from "../api/AuthApi";
+import {SyntheticEvent, useCallback, useContext, useState} from "react";
 import {BoardApi} from "../api/BoardApi";
 import {toast} from "react-toastify";
 import {UserContext} from "../context/UserContext";
+import {useNavigate} from "react-router-dom";
 
 function Header() {
     const [title, setTitle] = useState('');
-    const {currentUser} = useContext(UserContext)
+    const navigate = useNavigate();
+    const {currentUser, currentUserModifier} = useContext(UserContext)
     const saveBoard = async (e: SyntheticEvent) => {
         e.preventDefault()
 
@@ -21,6 +22,13 @@ function Header() {
 
         toast.success("Board created");
     }
+
+    const logout = useCallback(() => {
+        currentUserModifier(null);
+        localStorage.removeItem('ACCESS_TOKEN')
+        navigate("/");
+
+    }, [navigate,  currentUserModifier]);
 
     return (
         <Navbar bg='dark' variant='dark' expand="lg" collapseOnSelect>
@@ -51,8 +59,8 @@ function Header() {
                         <Nav.Link href="/login">Login</Nav.Link>
                             </> :
                             <>
-                                <Nav.Link href="/signup">Logout</Nav.Link>
                                 <Nav.Link href="/boards">Boards</Nav.Link>
+                                <Nav.Link onClick={logout}>Logout</Nav.Link>
                             </>}
                     </Nav>
                 </Navbar.Collapse>
