@@ -1,29 +1,45 @@
 import "./AddNewCard.css"
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {CardListApi} from "../api/CardListApi";
 import {toast} from "react-toastify";
 import {CardApi} from "../api/CardApi";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import {Form} from "react-bootstrap";
+import {BoardContext} from "../context/BoardContext";
+import {CardResponse} from "../api/CardResponse";
 
 interface Props {
     cardListId: number
-    boardId: number | undefined
 }
-const AddNewCard = ({ cardListId, boardId }: Props) => {
+const AddNewCard = ({ cardListId }: Props) => {
     const [title, setTitle] = useState('');
     const [showForm, setShowForm] = useState(false);
-
-    const createCardList = async (event: { preventDefault: () => void; }) => {
+    const context = useContext(BoardContext)
+    const createCard = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        console.log("cardList ID " + cardListId)
         try {
-            await CardApi.addCard({
+            const newCardResponse = await CardApi.addCard({
                 title: title
-            }, boardId, cardListId);
-            console.log(boardId)
-            console.log("cardList ID " + cardListId)
+            }, context.currentBoard?.id, cardListId);
+
+            const newCard: CardResponse = {
+                title: newCardResponse.data.title
+            };
+
+            if(context.currentBoard) {
+                const updatedCardList = context.currentBoard.cardLists.map(list => {
+                    if (list.Id === cardListId) {
+                        return {...list, cards: [...list.cards, newCard]};
+                    }
+                    else return list
+                })
+
+                context.currentBoardModifier({
+                    ...context.currentBoard,
+                    cardLists: updatedCardList,
+                });
+            }
             toast.success("Dodano Karte");
         } catch {
             toast.error("Błąd serwera tutaj");
@@ -38,6 +54,7 @@ const AddNewCard = ({ cardListId, boardId }: Props) => {
         setTitle(event.target.value);
     };
 
+
     return (
         <div className="add-card">
             {!showForm && (
@@ -46,7 +63,7 @@ const AddNewCard = ({ cardListId, boardId }: Props) => {
                 </Button>
             )}
             {showForm && (
-                <Form onSubmit={createCardList}>
+                <Form onSubmit={createCard}>
                     <Form.Group className="mb-5" controlId="formBasicEmail">
                         <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
                     </Form.Group>

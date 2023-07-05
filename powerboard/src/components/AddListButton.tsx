@@ -15,7 +15,6 @@ const AddNewCardList = ({boardId}: Props) => {
 
     const createCardList = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        console.log(boardId)
         try {
             await CardListApi.addCardList({
                 title: title

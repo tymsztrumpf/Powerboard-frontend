@@ -3,17 +3,15 @@ import HoverableCardText from "./HoverableCardText";
 import AddNewCard from "./AddNewCard";
 import {CardResponse} from "../api/CardResponse";
 import {CardListResponse} from "../api/CardListResponse";
+import {useContext} from "react";
+import {BoardContext} from "../context/BoardContext";
 
 interface Props {
     cardList: CardListResponse
-    boardId: number | undefined
 }
 
 
-const CardList = ({ cardList, boardId }: Props) => {
-
-    console.log(cardList)
-    console.log("CARDLIST W CARDLIST ID TO" + cardList.Id)
+const CardList = ({ cardList }: Props) => {
 
     return (
         <Card
@@ -27,7 +25,7 @@ const CardList = ({ cardList, boardId }: Props) => {
                 {cardList.cards.map((card, index) => (
                     <HoverableCardText key={index} text={card.title}/>
                 ))}
-                <AddNewCard cardListId={cardList.Id} boardId={boardId}/>
+                <AddNewCard cardListId={cardList.Id}/>
             </Card.Body>
         </Card>
     )
