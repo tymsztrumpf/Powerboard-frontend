@@ -16,6 +16,7 @@ const AddNewCard = ({ cardListId }: Props) => {
     const [title, setTitle] = useState('');
     const [showForm, setShowForm] = useState(false);
     const context = useContext(BoardContext)
+    const [cardAdded, setCardAdded] = useState(false);
     const createCard = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
         try {
@@ -40,6 +41,7 @@ const AddNewCard = ({ cardListId }: Props) => {
                     cardLists: updatedCardList,
                 });
             }
+            setCardAdded(true)
             toast.success("Dodano Karte");
         } catch {
             toast.error("Błąd serwera tutaj");
@@ -54,12 +56,19 @@ const AddNewCard = ({ cardListId }: Props) => {
         setTitle(event.target.value);
     };
 
+    useEffect(() => {
+        if (cardAdded) {
+            setShowForm(false);
+            setTitle("");
+            setCardAdded(false);
+        }
+    }, [cardAdded]);
 
     return (
-        <div className="add-card">
+        <div>
             {!showForm && (
-                <Button variant="success" onClick={handleButtonClick} style={{ width: '18rem', borderRadius: '2rem'}}>
-                    Add Card
+                <Button variant="success" onClick={handleButtonClick} style={{ width: '16rem', borderRadius: '15px'}}>
+                    + Dodaj karte
                 </Button>
             )}
             {showForm && (
@@ -67,7 +76,7 @@ const AddNewCard = ({ cardListId }: Props) => {
                     <Form.Group className="mb-5" controlId="formBasicEmail">
                         <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit" style={{ width: '18rem', borderRadius: '15px' }}>
+                    <Button variant="primary" type="submit" style={{ width: '15rem', borderRadius: '0.5px' }}>
                         Submit
                     </Button>
                 </Form>
