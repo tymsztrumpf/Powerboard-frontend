@@ -51,6 +51,10 @@ const AddNewCard = ({ cardListId }: Props) => {
     const handleButtonClick = () => {
         setShowForm(true);
     };
+    const handleCancelClick = () => {
+        setTitle('')
+        setShowForm(false);
+    };
 
     const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setTitle(event.target.value);
@@ -76,9 +80,14 @@ const AddNewCard = ({ cardListId }: Props) => {
                     <Form.Group className="mb-5" controlId="formBasicEmail">
                         <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit" style={{ width: '15rem', borderRadius: '0.5px' }}>
+                    <div className="d-flex justify-content-between">
+                    <Button variant="primary" type="submit" style={{ width: '15rem', borderRadius: '0.5rem' }}>
                         Submit
                     </Button>
+                    <Button onClick={handleCancelClick} variant="warning" type="button" style={{ width: '15rem', borderRadius: '0.5rem' }}>
+                        Cancel
+                    </Button>
+                    </div>
                 </Form>
             )}
         </div>

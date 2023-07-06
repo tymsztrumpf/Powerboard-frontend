@@ -4,7 +4,6 @@ import {Card} from 'react-bootstrap';
 import {toast} from "react-toastify";
 import TestImage from '../resources/img/test.jpg';
 import {useNavigate} from "react-router-dom";
-import BoardPage from "./BoardPage";
 import {BoardResponse} from "../api/BoardResponse";
 import {BoardContext} from "../context/BoardContext";
 import {Board} from "../models/Board";
@@ -35,6 +34,7 @@ const BoardsPage = () => {
     if (boards.length === 0) {
         return <p>You don't have any boards</p>
     }
+
 
     return (
         <div>
