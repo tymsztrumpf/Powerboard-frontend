@@ -1,14 +1,9 @@
-import Button from "react-bootstrap/Button";
-import {Form} from "react-bootstrap";
+import { Box, Button, TextField, Grid, Container } from '@mui/material';
 import React, {SyntheticEvent, useContext, useEffect, useState} from "react";
-import {BoardApi} from "../api/BoardApi";
 import {CardListApi} from "../api/CardListApi";
 import {toast} from "react-toastify";
 import {BoardContext} from "../context/BoardContext";
-import {CardResponse} from "../api/CardResponse";
 import {CardListResponse} from "../api/CardListResponse";
-
-
 const AddNewCardList = () => {
 
     const [showForm, setShowForm] = useState(false);
@@ -65,28 +60,51 @@ const AddNewCardList = () => {
     }, [cardAdded]);
 
     return (
-        <div>
-            {!showForm && (
-                <Button variant="success" onClick={handleButtonClick} style={{ width: '18rem', borderRadius: '0.5rem'}}>
-                    + Dodaj kolejną listę
-                </Button>
-            )}
-            {showForm && (
-                <Form onSubmit={createCardList} style={{ width: '18rem' }}>
-                    <Form.Group className="mb-5" controlId="formBasicEmail">
-                        <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
-                    </Form.Group>
-                    <div className="d-flex justify-content-between">
-                        <Button variant="primary" type="submit" style={{ width: '10rem', borderRadius: '0.5rem' }}>
-                            Submit
-                        </Button>
-                        <Button onClick={handleCancelClick} variant="warning" type="button" style={{ width: '10rem', borderRadius: '0.5rem' }}>
-                            Cancel
-                        </Button>
-                    </div>
-                </Form>
-            )}
-        </div>
+        <Container>
+            <Box>
+                {!showForm && (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleButtonClick}
+                        sx={{ width: '18rem', borderRadius: '0.5rem'}}
+                    >
+                        + Add new list
+                    </Button>
+                )}
+                {showForm && (
+                    <Box component="form" onSubmit={createCardList} sx={{ width: '18rem' }}>
+                        <Box mb={5}>
+                            <TextField
+                                type="text"
+                                placeholder="Title"
+                                value={title}
+                                onChange={handleInputChange}
+                                fullWidth
+                            />
+                        </Box>
+                        <Box sx={{ display: 'flex' }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                sx={{ width: '10rem', borderRadius: '0.5rem' }}
+                            >
+                                Submit
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={handleCancelClick}
+                                sx={{ width: '10rem', borderRadius: '0.5rem' }}
+                            >
+                                Cancel
+                            </Button>
+                        </Box>
+                    </Box>
+                )}
+            </Box>
+        </Container>
     )
 }
 

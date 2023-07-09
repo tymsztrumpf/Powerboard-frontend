@@ -1,9 +1,7 @@
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import FormContainer from "../components/FormContainer";
 import {SyntheticEvent, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {AuthApi} from "../api/AuthApi";
+import {Box, Button, Container, CssBaseline, TextField, Typography} from "@mui/material";
 
 const SignupPage = () => {
 
@@ -27,33 +25,79 @@ const SignupPage = () => {
     }
 
     return (
-        <FormContainer>
-            <h1>Sign Up</h1>
-            <Form onSubmit={submitHandler}>
-                <Form.Group className="my-3" controlId="firstName">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="firstName" placeholder="Enter your first name" value={firstName} onChange={e => setFirstName(e.target.value)}/>
-                </Form.Group>
+        <Container component="main" maxWidth="xs">
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+            >
+                <Typography component="h1" variant="h5">
+                    Sign up
+                </Typography>
+                <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
 
-                <Form.Group className="my-3" controlId="lastName">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="lastName" placeholder="Enter your last name" value={lastName} onChange={e => setLastName(e.target.value)}/>
-                </Form.Group>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="firstName"
+                        label="First name"
+                        type="firstName"
+                        id="firstName"
+                        value={firstName}
+                        onChange={e=>setFirstName(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="lastName"
+                        label="Last name"
+                        type="lastName"
+                        id="lastName"
+                        value={lastName}
+                        onChange={e=>setLastName(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={email}
+                        onChange={e=>setEmail(e.target.value)}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={e=>setPassword(e.target.value)}
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Sign Up
+                    </Button>
 
-                <Form.Group className="my-3" controlId="email">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)}/>
-                </Form.Group>
-
-                <Form.Group className="my-3" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
-                </Form.Group>
-                <Button className="my-3" variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
-        </FormContainer>
+                </Box>
+            </Box>
+        </Container>
     )
 }
 export default SignupPage;

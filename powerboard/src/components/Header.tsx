@@ -1,72 +1,92 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import {Dropdown, DropdownButton, FloatingLabel, Form} from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import {SyntheticEvent, useCallback, useContext, useState} from "react";
-import {BoardApi} from "../api/BoardApi";
-import {toast} from "react-toastify";
+import { AppBar, Toolbar, Typography, Button, IconButton, Menu, Box, TextField } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState, useContext, SyntheticEvent } from 'react';
+import { BoardApi } from "../api/BoardApi";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import {UserContext} from "../context/UserContext";
-import {useNavigate} from "react-router-dom";
 
-function Header() {
+const Header = () => {
     const [title, setTitle] = useState('');
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
     const navigate = useNavigate();
-    const {currentUser, currentUserModifier} = useContext(UserContext)
+    const { currentUser, currentUserModifier } = useContext(UserContext);
+
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const saveBoard = async (e: SyntheticEvent) => {
-        e.preventDefault()
+        e.preventDefault();
 
         await BoardApi.createBoard({
             title: title,
-        })
+        });
 
+        handleClose()
+        setTitle('')
         toast.success("Board created");
-    }
-
-    const logout = useCallback(() => {
+    };
+    const logout = () => {
         currentUserModifier(null);
-        localStorage.removeItem('ACCESS_TOKEN')
+        localStorage.removeItem('ACCESS_TOKEN');
         navigate("/");
-
-    }, [navigate,  currentUserModifier]);
+    };
 
     return (
-        <Navbar bg='dark' variant='dark' expand="lg" collapseOnSelect>
-            <Container>
-                <Navbar.Brand href="/">Powerboard</Navbar.Brand>
-
-                { currentUser && <DropdownButton variant="info" id="dropdown-basic-button" title="Create">
-                    <Dropdown.Item href="#/action-1">New Board</Dropdown.Item>
-                    <Container>
-                        <Form onSubmit={saveBoard}>
-                    <FloatingLabel
-                        controlId="floatingInput"
-                        label="Title"
-                        className="mb-3"
-                    >
-                        <Form.Control type="title" placeholder="title" value={title} onChange={e => setTitle(e.target.value)}/>
-                    </FloatingLabel>
-                        <Button variant="info" type="submit">Save</Button>
-                        </Form>
-                    </Container>
-                </DropdownButton> }
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="ms-auto">
-                        { !currentUser ?
-                            <>
-                            <Nav.Link href="/signup">Sign Up</Nav.Link>
-                        <Nav.Link href="/login">Login</Nav.Link>
-                            </> :
-                            <>
-                                <Nav.Link href="/boards">Boards</Nav.Link>
-                                <Nav.Link onClick={logout}>Logout</Nav.Link>
-                            </>}
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+        <AppBar position="static">
+            <Toolbar>
+                <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                </IconButton>
+                <Typography variant="h6"  component="div" sx={{ flexGrow: 1 }}>
+                    Powerboard
+                </Typography>
+                {currentUser ?
+                    <>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={handleMenu}
+                        >
+                            Create
+                        </Button>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={open}
+                            onClose={handleClose}
+                        >
+                            <Box sx={{ p: 2 }}>
+                                <form onSubmit={saveBoard}>
+                                    <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={e => setTitle(e.target.value)}/>
+                                    <Button variant="contained" type="submit" sx={{ mt: 2 }}>Save</Button>
+                                </form>
+                            </Box>
+                        </Menu>
+                        <Button color="inherit" href="/boards">Boards</Button>
+                        <Button color="inherit" onClick={logout}>Logout</Button>
+                    </> :
+                    <>
+                        <Button color="inherit" href="/signup">Sign Up</Button>
+                        <Button color="inherit" href="/login">Login</Button>
+                    </>}
+            </Toolbar>
+        </AppBar>
     );
 }
 
-export default Header
+export default Header;

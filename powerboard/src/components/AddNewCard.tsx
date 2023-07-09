@@ -1,11 +1,7 @@
-import "./AddNewCard.css"
+import { Button, TextField, Box, Grid, FormHelperText } from '@mui/material';
 import React, {useContext, useEffect, useState} from "react";
-import {CardListApi} from "../api/CardListApi";
 import {toast} from "react-toastify";
 import {CardApi} from "../api/CardApi";
-import {useNavigate, useParams} from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import {Form} from "react-bootstrap";
 import {BoardContext} from "../context/BoardContext";
 import {CardResponse} from "../api/CardResponse";
 
@@ -69,28 +65,54 @@ const AddNewCard = ({ cardListId }: Props) => {
     }, [cardAdded]);
 
     return (
-        <div>
-            {!showForm && (
-                <Button variant="success" onClick={handleButtonClick} style={{ width: '16rem', borderRadius: '15px'}}>
-                    + Dodaj karte
+        <Box>
+            {!showForm ? (
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleButtonClick}
+                    sx={{ width: '16rem', borderRadius: '0.5rem'}}
+                >
+                    + Dodaj kartę
                 </Button>
+            ) : (
+                <Box component="form" onSubmit={createCard} sx={{ width: '16rem' }}>
+                    <TextField
+                        type="text"
+                        placeholder="Title"
+                        value={title}
+                        onChange={handleInputChange}
+                        fullWidth
+                        required
+                        margin="normal"
+                    />
+                    <FormHelperText>
+                        <Grid container justifyContent="space-between">
+                            <Grid item>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    sx={{ width: '7.5rem', borderRadius: '0.5rem' }}
+                                >
+                                    Submit
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={handleCancelClick}
+                                    sx={{ width: '7.5rem', borderRadius: '0.5rem' }}
+                                >
+                                    Cancel
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </FormHelperText>
+                </Box>
             )}
-            {showForm && (
-                <Form onSubmit={createCard}>
-                    <Form.Group className="mb-5" controlId="formBasicEmail">
-                        <Form.Control type="text" placeholder="Title" value={title} onChange={handleInputChange}/>
-                    </Form.Group>
-                    <div className="d-flex justify-content-between">
-                    <Button variant="primary" type="submit" style={{ width: '15rem', borderRadius: '0.5rem' }}>
-                        Submit
-                    </Button>
-                    <Button onClick={handleCancelClick} variant="warning" type="button" style={{ width: '15rem', borderRadius: '0.5rem' }}>
-                        Cancel
-                    </Button>
-                    </div>
-                </Form>
-            )}
-        </div>
+        </Box>
     )
 }
 

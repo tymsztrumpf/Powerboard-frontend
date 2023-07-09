@@ -1,17 +1,12 @@
 import React from 'react';
-import { Container, Row, Col } from "react-bootstrap";
+import {BottomNavigation} from "@mui/material";
+
 
 const Footer = () => {
     return (
-        <footer>
-            <Container>
-                <Row>
-                    <Col className='text-center py-3'>
-                        Copyright &copy; Powerboard
-                    </Col>
-                </Row>
-            </Container>
-        </footer>
+        <BottomNavigation>
+            Copyright &copy; Powerboard
+        </BottomNavigation>
     )
 }
 

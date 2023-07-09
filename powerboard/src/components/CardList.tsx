@@ -1,13 +1,11 @@
-import {Card} from "react-bootstrap";
-import HoverableCardText from "./HoverableCardText";
-import AddNewCard from "./AddNewCard";
+import { Card, CardHeader, CardContent, TextField, Container } from '@mui/material';
 import {CardListResponse} from "../api/CardListResponse";
-import React, {useContext, useEffect, useState} from "react";
-import {Form} from "react-bootstrap";
+import React, {useContext, useState} from "react";
 import {CardListApi} from "../api/CardListApi";
 import {BoardContext} from "../context/BoardContext";
 import {toast} from "react-toastify";
-import {CardResponse} from "../api/CardResponse";
+import HoverableCardText from "./HoverableCardText";
+import AddNewCard from "./AddNewCard";
 
 interface Props {
     cardList: CardListResponse
@@ -15,13 +13,10 @@ interface Props {
 
 
 const CardList = ({ cardList }: Props) => {
-    const baseHeight = 12.5;
-    const perCardHeight = 3.125;
 
     const context = useContext(BoardContext)
     const [isEditing, setIsEditing] = useState(false);
     const [newTitle, setNewTitle] = useState(cardList.title);
-    const [totalHeight, setTotalHeight] = useState(`${baseHeight + (cardList.cards.length * perCardHeight)}rem`);
     const handleHeaderClick = () => {
         setIsEditing(true);
     };
@@ -32,9 +27,9 @@ const CardList = ({ cardList }: Props) => {
 
     const handleBlur = async () => {
         try {
-              await CardListApi.changeTitle({
-                  title: newTitle
-              }, context.currentBoard?.id, cardList.Id);
+            await CardListApi.changeTitle({
+                title: newTitle
+            }, context.currentBoard?.id, cardList.Id);
 
             if(context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
@@ -55,32 +50,32 @@ const CardList = ({ cardList }: Props) => {
         setIsEditing(false);
     };
 
-    useEffect(() => {
-        setTotalHeight(`${baseHeight + (cardList.cards.length * perCardHeight)}rem`);
-    }, [cardList.cards]);
-
     return (
-        <Card bg="dark" text="white" style={{height: totalHeight, width: '18rem', borderRadius: '0.5rem' }} className="mb-3">
-            <Card.Header onClick={handleHeaderClick}>
-                {isEditing ? (
-                        <Form.Control
-                            style={{ border: "none", backgroundColor: "transparent", color: "white", height: "1rem" }}
+        <Card sx={{ width: '18rem', borderRadius: '0.5rem', mb: 3, bgcolor: 'grey.900', color: 'white' }}>
+            <CardHeader
+                onClick={handleHeaderClick}
+                title={
+                    isEditing ? (
+                        <TextField
+                            sx={{ border: "none", bgcolor: "transparent", color: "white", height: "1rem" }}
                             type="text"
                             value={newTitle}
                             onChange={handleInputChange}
                             onBlur={handleBlur}
                             autoFocus
+                            fullWidth
                         />
-                ) : (
-                    cardList.title
-                )}
-            </Card.Header>
-            <Card.Body>
+                    ) : (
+                        cardList.title
+                    )
+                }
+            />
+            <CardContent>
                 {cardList.cards.map((card, index) => (
                     <HoverableCardText key={index} text={card.title} />
                 ))}
                 <AddNewCard cardListId={cardList.Id}/>
-            </Card.Body>
+            </CardContent>
         </Card>
     )
 }

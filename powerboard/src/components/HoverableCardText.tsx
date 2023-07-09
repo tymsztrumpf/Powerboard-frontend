@@ -1,5 +1,7 @@
 import {useState} from "react";
-import { Card } from "react-bootstrap";
+import Typography from '@mui/material/Typography';
+import { Box } from '@mui/system';
+import {StyledBox} from "./HoverableCardText.style";
 
 interface Props {
     text: string
@@ -8,19 +10,13 @@ const HoverableCardText = ({ text }: Props) => {
     const [hover, setHover] = useState(false);
 
     return (
-        <Card.Text
+        <StyledBox
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            style={{
-                borderRadius: '15px',
-                backgroundColor: hover ? '#555' : '#696969',
-                padding: '1em',
-                color: 'white',
-                marginBottom: '1em'
-            }}
+            hover={hover}
         >
-            {text}
-        </Card.Text>
+            <Typography variant="body1">{text}</Typography>
+        </StyledBox>
     );
 };
 
