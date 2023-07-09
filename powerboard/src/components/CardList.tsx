@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardContent, TextField, Container } from '@mui/material';
-import {CardListResponse} from "../api/CardListResponse";
+import {CardListResponse} from "../api/models/CardListResponse";
 import React, {useContext, useState} from "react";
 import {CardListApi} from "../api/CardListApi";
 import {BoardContext} from "../context/BoardContext";

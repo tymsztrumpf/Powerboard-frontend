@@ -1,7 +1,7 @@
 import axios from "axios";
-import {SignInRequest} from "./SignInRequest";
-import {SignInResponse} from "./SignInResponse";
-import {SignUpRequest} from "./SignUpRequest";
+import {SignInRequest} from "./models/SignInRequest";
+import {SignInResponse} from "./models/SignInResponse";
+import {SignUpRequest} from "./models/SignUpRequest";
 export class AuthApi {
     static signUp = async (request: SignUpRequest) =>
         await axios.post("http://localhost:8080/api/v1/auth/register", request);

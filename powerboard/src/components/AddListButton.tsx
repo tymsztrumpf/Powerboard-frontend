@@ -3,7 +3,7 @@ import React, {SyntheticEvent, useContext, useEffect, useState} from "react";
 import {CardListApi} from "../api/CardListApi";
 import {toast} from "react-toastify";
 import {BoardContext} from "../context/BoardContext";
-import {CardListResponse} from "../api/CardListResponse";
+import {CardListResponse} from "../api/models/CardListResponse";
 const AddNewCardList = () => {
 
     const [showForm, setShowForm] = useState(false);

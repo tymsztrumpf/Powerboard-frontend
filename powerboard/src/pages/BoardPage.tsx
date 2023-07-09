@@ -43,9 +43,9 @@ const BoardPage = () => {
             </CustomAppBar>
             <Container>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    {context.currentBoard?.cardLists.map((cardList, index) => (
+                    {context.currentBoard?.cardLists.sort((a, b) => a.Id - b.Id).map((cardList, index) => (
                         <div key={index}>
-                            <CardList key={index} cardList={cardList}/>
+                            <CardList cardList={cardList} key={index}/>
                         </div>
                     ))}
                     <AddListButton />

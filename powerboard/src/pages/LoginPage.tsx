@@ -19,8 +19,12 @@ const LoginPage = () => {
             email : email,
             password: password
         })
+        const user = {email: email, firstName: "pawel"};
+
         localStorage.setItem(ACCESS_TOKEN, response.data.token);
-        context.currentUserModifier({email: email, firstName: "pawel"})
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        context.currentUserModifier(user);
+
         toast.success("Poprawnie zalogowano");
         navigate('/');
     }

@@ -1,5 +1,5 @@
 import {authorizedApi} from "../hooks/withAxiosIntercepted";
-import {UserResponse} from "./UserResponse";
+import {UserResponse} from "./models/UserResponse";
 
 export class UserApi {
     static getUser = async () =>

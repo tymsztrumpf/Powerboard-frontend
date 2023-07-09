@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {CardApi} from "../api/CardApi";
 import {BoardContext} from "../context/BoardContext";
-import {CardResponse} from "../api/CardResponse";
+import {CardResponse} from "../api/models/CardResponse";
 
 interface Props {
     cardListId: number

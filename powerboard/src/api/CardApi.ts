@@ -1,6 +1,6 @@
-import {CardListRequest} from "./CardListRequest";
+import {CardListRequest} from "./models/CardListRequest";
 import {authorizedApi} from "../hooks/withAxiosIntercepted";
-import {CardRequest} from "./CardRequest";
+import {CardRequest} from "./models/CardRequest";
 
 export class CardApi {
     static addCard = async (request: CardRequest, boardId: number | undefined, cardListId: number | undefined ) =>

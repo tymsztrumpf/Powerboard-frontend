@@ -4,10 +4,11 @@ import {BoardApi} from "../api/BoardApi";
 import {toast} from "react-toastify";
 import TestImage from '../resources/img/test.jpg';
 import {useNavigate} from "react-router-dom";
-import {BoardResponse} from "../api/BoardResponse";
+import {BoardResponse} from "../api/models/BoardResponse";
 import {BoardContext} from "../context/BoardContext";
 import {Board} from "../models/Board";
 import {Card, CardContent, CardMedia, Container, Grid, Typography} from "@mui/material";
+import {UserContext} from "../context/UserContext";
 
 const BoardsPage = () => {
     const [boards, setBoards] = useState<BoardResponse[]>([]);

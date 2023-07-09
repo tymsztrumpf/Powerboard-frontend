@@ -1,5 +1,5 @@
-import {CardListResponse} from "../api/CardListResponse";
-import {UserResponse} from "../api/UserResponse";
+import {CardListResponse} from "../api/models/CardListResponse";
+import {UserResponse} from "../api/models/UserResponse";
 
 export type Board = {
     id: number,

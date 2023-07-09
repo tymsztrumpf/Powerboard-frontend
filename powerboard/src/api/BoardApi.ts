@@ -1,5 +1,5 @@
 import {authorizedApi} from "../hooks/withAxiosIntercepted";
-import {BoardRequest} from "./BoardRequest";
+import {BoardRequest} from "./models/BoardRequest";
 
 export class BoardApi {
     static createBoard = async (request: BoardRequest) =>

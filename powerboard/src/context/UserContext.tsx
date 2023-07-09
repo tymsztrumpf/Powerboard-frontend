@@ -1,6 +1,6 @@
 import {UserContextType} from "../models/UserContextType";
 import {User} from "../models/User";
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 
 const defaultSetting: UserContextType = {
     currentUser: null,
@@ -15,6 +15,12 @@ export const UserContextProvider = ({ children }: React.PropsWithChildren) => {
         setCurrentUser(user)
     }
 
+    useEffect(() => {
+        const user = localStorage.getItem('currentUser');
+        if (user) {
+            setCurrentUser(JSON.parse(user));
+        }
+    }, []);
 
     return (
         <UserContext.Provider value={{ currentUser, currentUserModifier }}> {children} </UserContext.Provider>

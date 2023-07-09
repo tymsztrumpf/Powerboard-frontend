@@ -1,10 +1,11 @@
 import { AppBar, Toolbar, Typography, Button, IconButton, Menu, Box, TextField } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState, useContext, SyntheticEvent } from 'react';
+import {useState, useContext, SyntheticEvent, useEffect} from 'react';
 import { BoardApi } from "../api/BoardApi";
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {UserContext} from "../context/UserContext";
+import {ACCESS_TOKEN} from "../constants/constants";
 
 const Header = () => {
     const [title, setTitle] = useState('');
@@ -12,6 +13,7 @@ const Header = () => {
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
     const { currentUser, currentUserModifier } = useContext(UserContext);
+    const location = useLocation();
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -37,6 +39,10 @@ const Header = () => {
         localStorage.removeItem('ACCESS_TOKEN');
         navigate("/");
     };
+
+    useEffect(() => {
+        console.log("CURRENT USER LOG" + currentUser)
+    }, [location]);
 
     return (
         <AppBar position="static">

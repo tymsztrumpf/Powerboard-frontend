@@ -32,22 +32,22 @@ function App() {
             },
         },
         shape: {
-            borderRadius: 6, // delikatne zaokrąglenie rogów
+            borderRadius: 6,
         },
         typography: {
-            fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif", // używamy tu czcionki Roboto, która jest prosta i nowoczesna
-            fontSize: 16, // standardowy rozmiar czcionki
-            fontWeightLight: 300, // lekka waga czcionki
+            fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+            fontSize: 16,
+            fontWeightLight: 300,
             fontWeightRegular: 400,
             fontWeightMedium: 500,
             fontWeightBold: 700,
         },
-        spacing: 2, // zredukowany spacing dla minimalistycznego wyglądu
+        spacing: 2,
         components: {
             MuiButton: {
                 styleOverrides: {
                     root: {
-                        textTransform: 'none', // usuwamy automatyczną zamianę na wielkie litery w przyciskach
+                        textTransform: 'none',
                     },
                 },
             },
