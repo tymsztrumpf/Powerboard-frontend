@@ -1,9 +1,7 @@
 import React, {useContext} from "react";
-import {BoardContext} from "../context/BoardContext";
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
 import {Card} from "@mui/material";
-import HoverableCardText from "./HoverableCardText";
 import {CardListResponse} from "../api/models/CardListResponse";
 import CardList from "./CardList";
 

@@ -40,9 +40,9 @@ const Header = () => {
         navigate("/");
     };
 
-    useEffect(() => {
-        console.log("CURRENT USER LOG" + currentUser)
-    }, [location]);
+    // useEffect(() => {
+    //     console.log("CURRENT USER LOG" + currentUser)
+    // }, [location]);
 
     return (
         <AppBar position="static">

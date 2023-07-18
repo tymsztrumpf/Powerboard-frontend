@@ -12,7 +12,12 @@ export const UserContext = createContext<UserContextType>(defaultSetting)
 export const UserContextProvider = ({ children }: React.PropsWithChildren) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const currentUserModifier = (user: User | null) => {
-        setCurrentUser(user)
+        if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('currentUser');
+        }
+        setCurrentUser(user);
     }
 
     useEffect(() => {
