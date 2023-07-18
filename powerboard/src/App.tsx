@@ -10,6 +10,7 @@ import {withAxiosIntercepted} from "./hooks/withAxiosIntercepted";
 import {UserContext, UserContextProvider} from "./context/UserContext";
 import {BoardContextProvider} from "./context/BoardContext";
 import {Container, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 function App() {
 

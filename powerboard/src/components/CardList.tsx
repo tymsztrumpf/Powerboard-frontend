@@ -1,22 +1,23 @@
-import { Card, CardHeader, CardContent, TextField, Container } from '@mui/material';
+import {Card, CardContent, CardHeader, TextField} from "@mui/material";
+import React, {useContext, useEffect, useState} from "react";
 import {CardListResponse} from "../api/models/CardListResponse";
-import React, {useContext, useState} from "react";
-import {CardListApi} from "../api/CardListApi";
 import {BoardContext} from "../context/BoardContext";
 import {toast} from "react-toastify";
-import HoverableCardText from "./HoverableCardText";
 import AddNewCard from "./AddNewCard";
-
+import {CardListApi} from "../api/CardListApi";
+import {CardResponse} from "../api/models/CardResponse";
+import SortableCard from "./SortableCard";
 interface Props {
     cardList: CardListResponse
 }
-
 
 const CardList = ({ cardList }: Props) => {
 
     const context = useContext(BoardContext)
     const [isEditing, setIsEditing] = useState(false);
     const [newTitle, setNewTitle] = useState(cardList.title);
+    const [cards, setCards] = useState(cardList.cards || []);
+    const [activeItem, setActiveItem] = useState<CardResponse>()
     const handleHeaderClick = () => {
         setIsEditing(true);
     };
@@ -50,14 +51,18 @@ const CardList = ({ cardList }: Props) => {
         setIsEditing(false);
     };
 
+    useEffect(() => {
+        setCards(cardList.cards || []);
+    }, [cardList]);
+
     return (
-        <Card sx={{ width: '18rem', borderRadius: '0.5rem', mb: 3, bgcolor: 'grey.900', color: 'white' }}>
+        <Card sx={{ width: '18rem', borderRadius: '0.5rem', mb: 3, backgroundColor: 'grey.900', color: 'white' , minHeight: '2rem'}}>
             <CardHeader
                 onClick={handleHeaderClick}
                 title={
                     isEditing ? (
                         <TextField
-                            sx={{ border: "none", bgcolor: "transparent", color: "white", height: "1rem" }}
+                            sx={{ border: "none", backgroundColor: "transparent", color: "white", height: "1rem" }}
                             type="text"
                             value={newTitle}
                             onChange={handleInputChange}
@@ -71,8 +76,10 @@ const CardList = ({ cardList }: Props) => {
                 }
             />
             <CardContent>
-                {cardList.cards.map((card, index) => (
-                    <HoverableCardText key={index} text={card.title} />
+                {cards.map((card, index) => (
+                    card.id
+                        ? <SortableCard key={card.id.toString()} id={card.id.toString()} text={card.title} cardList={cardList}/>
+                        : <></>
                 ))}
                 <AddNewCard cardListId={cardList.Id}/>
             </CardContent>
