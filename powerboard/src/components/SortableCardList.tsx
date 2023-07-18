@@ -27,9 +27,9 @@ const SortableCardList: React.FC<SortableCardListProps> = ({cardList}) => {
         opacity: isDragging ? 0.5 : 1,
     }
     return (
-        <Card ref={setNodeRef} style={style} {...attributes} {...listeners} >
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
     <CardList cardList={cardList} />
-    </Card>
+    </div>
 );
 };
 

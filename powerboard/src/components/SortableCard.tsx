@@ -31,10 +31,11 @@ const SortableCard: React.FC<SortableCardProps> = ({id, text, cardList}) => {
         zIndex: isDragging ? 2 : 1,
         opacity: isDragging ? 0.5 : 1,
     };
+
     return (
-        <Card ref={setNodeRef} style={style} {...attributes} {...listeners} >
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
             <HoverableCardText cardList={cardList} text={text}></HoverableCardText>
-        </Card>
+        </div>
     );
 };
 

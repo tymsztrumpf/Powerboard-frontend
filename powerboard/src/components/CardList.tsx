@@ -56,13 +56,13 @@ const CardList = ({ cardList }: Props) => {
     }, [cardList]);
 
     return (
-        <Card sx={{ width: '18rem', borderRadius: '0.5rem', mb: 3, backgroundColor: 'grey.900', color: 'white' , minHeight: '2rem'}}>
+        <Card sx={{ width: '18rem', borderRadius: '0.5rem', mb: 3,  minHeight: '2rem'}}>
             <CardHeader
                 onClick={handleHeaderClick}
                 title={
                     isEditing ? (
                         <TextField
-                            sx={{ border: "none", backgroundColor: "transparent", color: "white", height: "1rem" }}
+                            sx={{ border: "none", backgroundColor: "transparent",  height: "1rem" }}
                             type="text"
                             value={newTitle}
                             onChange={handleInputChange}

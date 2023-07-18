@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button, IconButton, Menu, Box, TextField } from '@mui/material';
+import {AppBar, Toolbar, Typography, Button, IconButton, Menu, Box, TextField, Switch} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState, useContext, SyntheticEvent, useEffect} from 'react';
 import { BoardApi } from "../api/BoardApi";
@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {UserContext} from "../context/UserContext";
 import {ACCESS_TOKEN} from "../constants/constants";
+import {ThemeContext} from "../context/ThemeContext";
 
 const Header = () => {
     const [title, setTitle] = useState('');
@@ -13,7 +14,8 @@ const Header = () => {
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
     const { currentUser, currentUserModifier } = useContext(UserContext);
-    const location = useLocation();
+    const { toggleTheme } = useContext(ThemeContext);
+    const { isDark } = useContext(ThemeContext)
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -39,10 +41,6 @@ const Header = () => {
         localStorage.removeItem('ACCESS_TOKEN');
         navigate("/");
     };
-
-    // useEffect(() => {
-    //     console.log("CURRENT USER LOG" + currentUser)
-    // }, [location]);
 
     return (
         <AppBar position="static">
@@ -85,10 +83,12 @@ const Header = () => {
                         </Menu>
                         <Button color="inherit" href="/boards">Boards</Button>
                         <Button color="inherit" onClick={logout}>Logout</Button>
+                        <Switch checked={isDark} onChange={toggleTheme}></Switch>
                     </> :
                     <>
                         <Button color="inherit" href="/signup">Sign Up</Button>
                         <Button color="inherit" href="/login">Login</Button>
+                        <Switch checked={isDark} onChange={toggleTheme}></Switch>
                     </>}
             </Toolbar>
         </AppBar>
