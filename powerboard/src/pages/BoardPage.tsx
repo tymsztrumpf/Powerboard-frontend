@@ -64,7 +64,6 @@ const BoardPage = () => {
         const overCardIndex = cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id);
 
         if (targetList) {
-            // Do not add the card if it already exists in the target list
             if (!targetList.cards.some(card => card.id === removedCard.id)) {
                 if (overCardIndex !== -1) {
                     targetList.cards.splice(overCardIndex, 0, removedCard);

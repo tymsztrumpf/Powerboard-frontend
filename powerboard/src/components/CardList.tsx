@@ -58,6 +58,7 @@ const CardList = ({ cardList }: Props) => {
     return (
         <Card sx={{ width: '18rem', borderRadius: '0.5rem', mb: 3,  minHeight: '2rem'}}>
             <CardHeader
+                data-no-dnd="true"
                 onClick={handleHeaderClick}
                 title={
                     isEditing ? (
@@ -78,7 +79,7 @@ const CardList = ({ cardList }: Props) => {
             <CardContent>
                 {cards.map((card, index) => (
                     card.id
-                        ? <SortableCard key={card.id.toString()} id={card.id.toString()} text={card.title} cardList={cardList}/>
+                        ? <SortableCard key={card.id.toString()} id={card.id.toString()} cardList={cardList} card={card}/>
                         : <></>
                 ))}
                 <AddNewCard cardListId={cardList.Id}/>

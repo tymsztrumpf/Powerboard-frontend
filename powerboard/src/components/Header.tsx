@@ -39,6 +39,7 @@ const Header = () => {
     const logout = () => {
         currentUserModifier(null);
         localStorage.removeItem('ACCESS_TOKEN');
+        localStorage.removeItem('currentUser');
         navigate("/");
     };
 

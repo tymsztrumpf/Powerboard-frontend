@@ -6,13 +6,14 @@ import {DragStartEvent} from "@dnd-kit/core";
 import {BoardContext} from "../context/BoardContext";
 import {useContext} from "react";
 import {CardListResponse} from "../api/models/CardListResponse";
+import {CardResponse} from "../api/models/CardResponse";
 interface SortableCardProps {
     id: string;
-    text: string;
     cardList: CardListResponse
+    card: CardResponse
 }
 
-const SortableCard: React.FC<SortableCardProps> = ({id, text, cardList}) => {
+const SortableCard: React.FC<SortableCardProps> = ({id, cardList, card}) => {
     const context = useContext(BoardContext);
 
     const {
@@ -34,7 +35,7 @@ const SortableCard: React.FC<SortableCardProps> = ({id, text, cardList}) => {
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
-            <HoverableCardText cardList={cardList} text={text}></HoverableCardText>
+            <HoverableCardText cardList={cardList} card={card}></HoverableCardText>
         </div>
     );
 };
