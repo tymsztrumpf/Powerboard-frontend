@@ -5,8 +5,6 @@ import {AuthApi} from "../api/AuthApi";
 import {ACCESS_TOKEN} from "../constants/constants";
 import {UserContext} from "../context/UserContext";
 import {Box, Button, Container, CssBaseline, TextField, Typography} from "@mui/material";
-
-
 const LoginPage = () => {
 
     const navigate = useNavigate()

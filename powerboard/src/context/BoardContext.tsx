@@ -2,13 +2,14 @@ import {BoardContextType} from "../models/BoardContextType";
 import {Board} from "../models/Board";
 import {createContext, useState} from "react";
 import {CardListResponse} from "../api/models/CardListResponse";
+import {UserResponse} from "../api/models/UserResponse";
 
 const defaultSetting: BoardContextType = {
     currentBoard: null,
     currentCardList: null,
     currentBoardModifier: (board: Board | null) => {},
     updateCardLists: (newCardLists: CardListResponse[] | null) => {},
-    currentCardListModifier: (cardList: CardListResponse | null) => {}
+    currentCardListModifier: (cardList: CardListResponse | null) => {},
 }
 
 export const BoardContext = createContext<BoardContextType>(defaultSetting)
@@ -29,7 +30,6 @@ export const BoardContextProvider = ({ children }: React.PropsWithChildren) => {
             setCurrentBoard(updatedBoard);
         }
     }
-
 
     return (
         <BoardContext.Provider value={{ currentBoard, currentBoardModifier, updateCardLists, currentCardList, currentCardListModifier}}> {children} </BoardContext.Provider>

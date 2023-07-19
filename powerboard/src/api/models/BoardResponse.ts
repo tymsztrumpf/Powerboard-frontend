@@ -6,4 +6,5 @@ export type BoardResponse = {
     title: string;
     users: UserResponse[];
     cardLists: CardListResponse[];
+    owner: UserResponse;
 }

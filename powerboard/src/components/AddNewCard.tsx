@@ -27,7 +27,6 @@ const AddNewCard = ({ cardListId }: Props) => {
                 executors: newCardResponse.data.executors
             };
 
-            console.log("ID KARTRYYYYYYYYYYYYYY" + context.currentBoard?.cardLists)
             if(context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
                     if (list.Id === cardListId) {
