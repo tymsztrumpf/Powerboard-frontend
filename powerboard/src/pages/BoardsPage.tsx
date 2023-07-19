@@ -15,7 +15,7 @@ const BoardsPage = () => {
     const navigate = useNavigate();
     const context = useContext(BoardContext)
     const handleBoardClick = (board: Board) => {
-        context.currentBoardModifier({id: board.id, title: board.title, users: board.users, cardLists: board.cardLists})
+        context.currentBoardModifier({id: board.id, title: board.title, users: board.users, cardLists: board.cardLists, owner: board.owner})
         navigate(`/board/${board.id}`);
     }
 

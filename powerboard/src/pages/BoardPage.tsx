@@ -43,10 +43,12 @@ import {UserApi} from "../api/UserApi";
 import {BoardResponse} from "../api/models/BoardResponse";
 import {UserResponse} from "../api/models/UserResponse";
 import {CardApi} from "../api/CardApi";
+import {UserContext} from "../context/UserContext";
 
 const BoardPage = () => {
     const context = useContext(BoardContext)
     const themeContext = useContext(ThemeContext)
+    const currentUser = useContext(UserContext)
     const [open, setOpen] = useState(false);
     const [cards, setCards] = useState<CardResponse[]>([]);
     const [users, setUsers] = useState<UserResponse[]>([]);
@@ -187,6 +189,29 @@ const BoardPage = () => {
         }
 
     };
+    const removeUser = async (userEmail: string) => {
+        try {
+            await BoardApi.removeUser({
+                userEmail: userEmail,
+                boardId: context.currentBoard?.id
+            });
+
+            if(context.currentBoard) {
+                const updatedUserList = context.currentBoard.users.filter(user => user.email !== userEmail);
+
+                context.currentBoardModifier({
+                    ...context.currentBoard,
+                    users: updatedUserList,
+                });
+
+                setUsers(updatedUserList);
+            }
+
+            toast.success("Usunięto użytkownika");
+        } catch {
+            toast.error("Błąd serwera przy usuwaniu użytkownika");
+        }
+    };
 
     useEffect(() => {
         setCards(context.currentCardList?.cards || []);
@@ -256,6 +281,15 @@ const BoardPage = () => {
                                                     </>
                                                 }
                                             />
+                                            {context.currentBoard?.owner.email === currentUser.currentUser?.email && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="secondary"
+                                                    onClick={() => removeUser(user.email)}
+                                                >
+                                                    DELETE
+                                                </Button>
+                                            )}
                                         </ListItem>
                                     ))}
                                 </List>
