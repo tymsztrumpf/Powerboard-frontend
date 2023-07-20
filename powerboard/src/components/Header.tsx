@@ -31,9 +31,8 @@ const Header = () => {
         await BoardApi.createBoard({
             title: title,
         });
-
-        handleClose()
         setTitle('')
+        handleClose()
         toast.success("Board created");
     };
     const logout = () => {
@@ -77,7 +76,7 @@ const Header = () => {
                         >
                             <Box sx={{ p: 2 }}>
                                 <form onSubmit={saveBoard}>
-                                    <TextField id="outlined-basic" label="Title" variant="outlined" value={title} onChange={e => setTitle(e.target.value)}/>
+                                    <TextField id="outlined-basic" placeholder="Your new board title..." variant="outlined" value={title} onChange={e => setTitle(e.target.value)}/>
                                     <Button variant="contained" type="submit" sx={{ mt: 2 }}>Save</Button>
                                 </form>
                             </Box>
