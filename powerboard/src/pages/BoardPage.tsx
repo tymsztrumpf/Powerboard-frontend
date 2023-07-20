@@ -52,7 +52,7 @@ const BoardPage = () => {
     const [open, setOpen] = useState(false);
     const [cards, setCards] = useState<CardResponse[]>([]);
     const [users, setUsers] = useState<UserResponse[]>([]);
-    const [userEmail, setUserEmail] = useState<string | undefined>();
+    const [userEmail, setUserEmail] = useState<string>("");
     const [activeItem, setActiveItem] = useState<CardResponse>()
     const sensors = useSensors(
         useSensor(CustomMouseSensor),
@@ -252,7 +252,6 @@ const BoardPage = () => {
                                         id="combo-box-demo"
                                         options={users.map((user) => user.email)}
                                         renderInput={(params) => <TextField {...params} label="Users" />}
-                                        inputValue={userEmail}
                                         onInputChange={(event, value) => {
                                             setUserEmail(value);
                                         }}
@@ -281,7 +280,7 @@ const BoardPage = () => {
                                                     </>
                                                 }
                                             />
-                                            {context.currentBoard?.owner.email === currentUser.currentUser?.email && (
+                                            {context.currentBoard?.owner.email === currentUser.currentUser?.email && currentUser.currentUser?.email !== user.email && (
                                                 <Button
                                                     variant="contained"
                                                     color="secondary"
