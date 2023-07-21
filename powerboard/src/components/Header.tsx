@@ -34,6 +34,7 @@ const Header = () => {
         setTitle('')
         handleClose()
         toast.success("Board created");
+        navigate("/boards");
     };
     const logout = () => {
         currentUserModifier(null);

@@ -91,7 +91,12 @@ const BoardPage = () => {
         if (targetList) {
             if (!targetList.cards.some(card => card.id === removedCard.id)) {
                 if (overCardIndex !== -1) {
+                    if(activeCardIndex - overCardIndex <= 0 ) {
+                        targetList.cards.splice(overCardIndex + 1, 0, removedCard);
+                    }
+                    else {
                     targetList.cards.splice(overCardIndex, 0, removedCard);
+                    }
                 } else {
                     targetList.cards.push(removedCard);
                 }

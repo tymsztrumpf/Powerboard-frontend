@@ -32,12 +32,11 @@ const AddNewCardList = () => {
                 });
             }
             setCardAdded(true)
-            toast.success("Dodano Karte");
+            toast.success("Card added");
         } catch {
-            toast.error("Błąd serwera tutaj");
+            toast.error("Server error");
         }
     };
-
 
     const handleButtonClick = () => {
         setShowForm(true);
