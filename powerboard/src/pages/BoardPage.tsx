@@ -23,7 +23,7 @@ import {
     TouchSensor,
     useSensor,
     useSensors,
-    KeyboardSensor, DragEndEvent, DragStartEvent, closestCorners, DragOverlay,
+    KeyboardSensor, DragEndEvent, DragStartEvent, closestCorners, DragOverlay, DragOverEvent,
 } from "@dnd-kit/core";
 import {
     arrayMove,
@@ -35,24 +35,14 @@ import {CardListResponse} from "../api/models/CardListResponse";
 import SortableCardList from "../components/SortableCardList";
 import {CustomMouseSensor} from "../sensors/CustomMouseSensor";
 import {CustomKeyboardSensor} from "../sensors/CustomKeyboardSensor";
-import {ThemeContext} from "../context/ThemeContext";
-import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
-import {BoardApi} from "../api/BoardApi";
-import {toast} from "react-toastify";
-import {UserApi} from "../api/UserApi";
-import {BoardResponse} from "../api/models/BoardResponse";
-import {UserResponse} from "../api/models/UserResponse";
-import {CardApi} from "../api/CardApi";
-import {UserContext} from "../context/UserContext";
+import BoardHeader from "../components/BoardHeader";
+import HoverableCardText from "../components/HoverableCardText";
+import CardList from "../components/CardList";
 
 const BoardPage = () => {
     const context = useContext(BoardContext)
-    const themeContext = useContext(ThemeContext)
-    const currentUser = useContext(UserContext)
-    const [open, setOpen] = useState(false);
     const [cards, setCards] = useState<CardResponse[]>([]);
-    const [users, setUsers] = useState<UserResponse[]>([]);
-    const [userEmail, setUserEmail] = useState<string>("");
+    const [isDragging, setIsDragging] = useState(false);
     const [activeItem, setActiveItem] = useState<CardResponse>()
     const sensors = useSensors(
         useSensor(CustomMouseSensor),
@@ -64,6 +54,8 @@ const BoardPage = () => {
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
 
+        setIsDragging(false);
+        context.isDraggingModifier(false);
         if (!active || !over || active.id === over.id) {
             return;
         }
@@ -139,187 +131,96 @@ const BoardPage = () => {
             }
         }
     }
-    const fetchUsers = useCallback(async () => {
-        try {
-            const response = await UserApi.getAllUsers();
-            setUsers(response.data)
-        } catch {
-            toast.error("Bład serwera")
-        }
+    const handleDragOver = ({ active, over }: DragOverEvent) => {
+        if (context.currentBoard?.cardLists) {
+            const activeList = findCardListContainer(context.currentBoard.cardLists, active.id as string);
+            const overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
 
-    }, []);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+            if (!activeList || !overList || activeList === overList) {
+                return;
+            }
+
+            const activeIndex = activeList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
+            if (over) {
+                const overIndex = overList.cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id);
+
+                if (activeIndex === -1 || overIndex === -1) {
+                    return;
+                }
+
+                const removedCard = activeList.cards[activeIndex];
+                const newActiveListCards = [...activeList.cards.filter((_, index) => index !== activeIndex)];
+
+                const newOverListCards = [
+                    ...overList.cards.slice(0, overIndex),
+                    removedCard,
+                    ...overList.cards.slice(overIndex)
+                ];
+
+                const updatedActiveList = { ...activeList, cards: newActiveListCards };
+                const updatedOverList = { ...overList, cards: newOverListCards };
+
+                const updatedCardList = context.currentBoard.cardLists.map(existingList => {
+                    if (existingList.Id === activeList.Id) {
+                        return updatedActiveList;
+                    } else if (existingList.Id === overList.Id) {
+                        return updatedOverList;
+                    } else {
+                        return existingList;
+                    }
+                });
+
+                context.updateCardLists(updatedCardList);
+                if (context.currentCardList && (activeList.Id === context.currentCardList.Id || overList.Id === context.currentCardList.Id)) {
+                    context.currentCardListModifier(updatedActiveList.Id === context.currentCardList.Id ? updatedActiveList : updatedOverList);
+                }
+            }
+        }
+    };
     const handleDragStart = (event: DragStartEvent) => {
+        setIsDragging(true)
+        context.isDraggingModifier(true)
         const { active } = event
         setActiveItem(cards.find((item) => item.id === active.id))
     }
-    const filterOptions = (options: string[], { inputValue }: { inputValue: string }) =>
-        inputValue.length >= 1
-            ? options.filter((option) =>
-                option.toLowerCase().includes(inputValue.toLowerCase())
-            )
-            : [];
-
-    const addUser = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-
-        try {
-            const newUserResponse = await BoardApi.addUser({
-                userEmail: userEmail,
-                boardId: context.currentBoard?.id
-            });
-
-            const newUser: UserResponse = {
-                email: newUserResponse.data.email,
-                firstName: newUserResponse.data.firstName,
-                lastName: newUserResponse.data.lastName
-            };
-
-            if(context.currentBoard) {
-                const updatedUserList = [...context.currentBoard.users, newUser]
-
-                context.currentBoardModifier({
-                    ...context.currentBoard,
-                    users: updatedUserList,
-                });
-
-                setUsers(updatedUserList);
-            }
-
-            toast.success("Dodano Uzytkownika");
-        } catch {
-
-            toast.error("Błąd serwera przy dodawaniua uzytkownika");
-        }
-
-    };
-    const removeUser = async (userEmail: string) => {
-        try {
-            await BoardApi.removeUser({
-                userEmail: userEmail,
-                boardId: context.currentBoard?.id
-            });
-
-            if(context.currentBoard) {
-                const updatedUserList = context.currentBoard.users.filter(user => user.email !== userEmail);
-
-                context.currentBoardModifier({
-                    ...context.currentBoard,
-                    users: updatedUserList,
-                });
-
-                setUsers(updatedUserList);
-            }
-
-            toast.success("Usunięto użytkownika");
-        } catch {
-            toast.error("Błąd serwera przy usuwaniu użytkownika");
-        }
-    };
 
     useEffect(() => {
         setCards(context.currentCardList?.cards || []);
     }, [context.currentCardList]);
 
-    useEffect(() => {
-        fetchUsers();
-    }, [fetchUsers])
 
     return (
         <>
-            <CustomAppBar position="static" color="primary" enableColorOnDark>
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        {context.currentBoard?.title}
-                    </Typography>
-                    <StyledPersonAddAltIcon
-                        onClick={handleOpen}
-                        fontSize={"large"}
-                        color={"primary"}
-                    ></StyledPersonAddAltIcon>
-                    <Modal
-                        data-no-dnd="true"
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <StyledModal bgcolor={themeContext.theme.palette.background.paper}>
-                            <Container>
-                                <Typography id="modal-modal-title" variant="h5" component="h4" sx={{ mb: 8}}>
-                                    Invite to a board
-                                </Typography>
-                                <StyledBox>
-                                    <Autocomplete
-                                        sx={{ width: '80%', marginRight: '1rem' }}
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        options={users.map((user) => user.email)}
-                                        renderInput={(params) => <TextField {...params} label="Users" />}
-                                        onInputChange={(event, value) => {
-                                            setUserEmail(value);
-                                        }}
-                                        filterOptions={filterOptions}
-                                    />
-                                    <StyledButton variant="contained" color="primary" onClick={addUser}>
-                                        Invite
-                                    </StyledButton>
-                                </StyledBox>
-                                <Typography id="users-in-board-title" variant="h6" component="h5" sx={{ mt: 4, mb: 2 }}>
-                                    Users
-                                </Typography>
-                                <List>
-                                    {context.currentBoard?.users.map((user) => (
-                                        <ListItem key={user.email}>
-                                            <Avatar key={user.email} alt={user.firstName ? user.firstName.toUpperCase() : ''} sx={{ mr: 4 }} src="/static/images/avatar/2.jpg" />
-                                            <ListItemText
-                                                primary={
-                                                    <>
-                                                        <Typography variant="h6" component="span">
-                                                            {user.firstName} {user.lastName}
-                                                        </Typography>
-                                                        <Typography variant="body2" component="p" color="text.secondary">
-                                                            {user.email}
-                                                        </Typography>
-                                                    </>
-                                                }
-                                            />
-                                            {context.currentBoard?.owner.email === currentUser.currentUser?.email && currentUser.currentUser?.email !== user.email && (
-                                                <Button
-                                                    variant="contained"
-                                                    color="secondary"
-                                                    onClick={() => removeUser(user.email)}
-                                                >
-                                                    DELETE
-                                                </Button>
-                                            )}
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Container>
-                        </StyledModal>
-                    </Modal>
-                    {context.currentBoard?.users.map((user, index) => (
-                        <Avatar key={index} alt={user.firstName.toUpperCase()} src="/static/images/avatar/2.jpg" />
-                    ))}
-                </Toolbar>
-            </CustomAppBar>
+            <BoardHeader />
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "start" }}>
             <Container>
-                <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-                    <SortableContext items={cards.map(card => card.id.toString())} strategy={rectSortingStrategy}>
+                <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
+                    <SortableContext items={
+                        context.currentBoard
+                            ? context.currentBoard.cardLists.flatMap(cardList => cardList.cards.map(card => card.id.toString()))
+                            : []
+                    } strategy={verticalListSortingStrategy}>
                         <div style={{ display: 'flex', gap: '1rem' }}>
                             {context.currentBoard?.cardLists.sort((a, b) => a.Id - b.Id).map((cardList, index) => (
                                 <div key={`div-${cardList.Id}`}>
-                                    <SortableCardList cardList={cardList} key={cardList.Id}/>
+                                    {
+                                        context.isDragging ?
+                                            <SortableCardList cardList={cardList} key={cardList.Id}/> :
+                                            <CardList cardList={cardList} key={cardList.Id}/>
+                                    }
                                 </div>
                             ))}
                             <AddListButton />
                         </div>
                     </SortableContext>
-
+                    <DragOverlay>
+                        {isDragging && context.currentCard && context.currentCardList ? (
+                            <HoverableCardText card={context.currentCard} cardList={context.currentCardList}/>
+                        ): null}
+                    </DragOverlay>
                 </DndContext>
             </Container>
+            </div>
         </>
     )
 }

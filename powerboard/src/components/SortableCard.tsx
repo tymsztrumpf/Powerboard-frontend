@@ -14,7 +14,6 @@ interface SortableCardProps {
 }
 
 const SortableCard: React.FC<SortableCardProps> = ({id, cardList, card}) => {
-    const context = useContext(BoardContext);
 
     const {
         attributes,

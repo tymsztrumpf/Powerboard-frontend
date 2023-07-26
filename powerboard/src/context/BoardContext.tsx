@@ -2,14 +2,18 @@ import {BoardContextType} from "../models/BoardContextType";
 import {Board} from "../models/Board";
 import {createContext, useState} from "react";
 import {CardListResponse} from "../api/models/CardListResponse";
-import {UserResponse} from "../api/models/UserResponse";
+import {CardResponse} from "../api/models/CardResponse";
 
 const defaultSetting: BoardContextType = {
     currentBoard: null,
     currentCardList: null,
+    currentCard: null,
+    isDragging: false,
     currentBoardModifier: (board: Board | null) => {},
     updateCardLists: (newCardLists: CardListResponse[] | null) => {},
     currentCardListModifier: (cardList: CardListResponse | null) => {},
+    currentCardModifier: (card: CardResponse | null) => {},
+    isDraggingModifier: (isDragging: boolean) => {},
 }
 
 export const BoardContext = createContext<BoardContextType>(defaultSetting)
@@ -17,11 +21,19 @@ export const BoardContext = createContext<BoardContextType>(defaultSetting)
 export const BoardContextProvider = ({ children }: React.PropsWithChildren) => {
     const [currentBoard, setCurrentBoard] = useState<Board | null>(null)
     const [currentCardList, setCurrentCardlist] = useState<CardListResponse | null>(null)
+    const [currentCard, setCurrentCard] = useState<CardResponse | null>(null)
+    const [isDragging, setIsDragging] = useState(false)
     const currentBoardModifier = (board: Board | null) => {
         setCurrentBoard(board)
     }
     const currentCardListModifier = (cardList: CardListResponse | null) => {
         setCurrentCardlist(cardList)
+    }
+    const currentCardModifier = (card: CardResponse | null) => {
+        setCurrentCard(card)
+    }
+    const isDraggingModifier = (isDragging: boolean) => {
+        setIsDragging(isDragging);
     }
     const updateCardLists = (newCardLists: CardListResponse[]) => {
         if (currentBoard) {
@@ -32,6 +44,6 @@ export const BoardContextProvider = ({ children }: React.PropsWithChildren) => {
     }
 
     return (
-        <BoardContext.Provider value={{ currentBoard, currentBoardModifier, updateCardLists, currentCardList, currentCardListModifier}}> {children} </BoardContext.Provider>
+        <BoardContext.Provider value={{ currentBoard, currentBoardModifier, updateCardLists, currentCardList, currentCardListModifier, currentCard, currentCardModifier, isDragging, isDraggingModifier}}> {children} </BoardContext.Provider>
     )
 }

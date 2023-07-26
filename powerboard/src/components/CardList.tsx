@@ -53,6 +53,7 @@ const CardList = ({ cardList }: Props) => {
 
     useEffect(() => {
         setCards(cardList.cards || []);
+        console.log(cards)
     }, [cardList]);
 
     return (

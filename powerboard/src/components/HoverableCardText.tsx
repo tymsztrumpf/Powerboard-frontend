@@ -21,7 +21,11 @@ const HoverableCardText = ({ card, cardList }: Props) => {
     const setCurrentCardList = () => {
         context.currentCardListModifier(cardList)
     }
-
+    const setCurrentCard = () => {
+        if(!context.isDragging) {
+            context.currentCardModifier(card)
+        }
+    }
     return (
         <>
         <StyledBox
@@ -29,6 +33,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
             onMouseEnter={() => {
                 setHover(true);
                 setCurrentCardList();
+                setCurrentCard();
             }}
             onMouseLeave={() => setHover(false)}
             hover={hover}
