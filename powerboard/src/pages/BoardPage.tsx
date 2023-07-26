@@ -136,9 +136,41 @@ const BoardPage = () => {
             const activeList = findCardListContainer(context.currentBoard.cardLists, active.id as string);
             const overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
 
+            if(overList === undefined){
+                if(activeList) {
+
+                    const emptyOverList = context.currentBoard?.cardLists.find(list => list.cards.length === 0);
+                    const activeIndex = activeList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
+                    const removedCard = activeList.cards[activeIndex];
+                    const newActiveListCards = [...activeList.cards.filter((_, index) => index !== activeIndex)];
+
+                    if(emptyOverList) {
+                        emptyOverList.cards.push(removedCard)
+
+                        const newOverListCards = emptyOverList.cards
+                        const updatedActiveList = { ...activeList, cards: newActiveListCards };
+                        const updatedOverList = { ...emptyOverList, cards: newOverListCards };
+                        const updatedCardList = context.currentBoard.cardLists.map(existingList => {
+                            if (existingList.Id === activeList.Id) {
+                                return updatedActiveList;
+                            } else if (emptyOverList && existingList.Id === emptyOverList.Id) {
+                                return updatedOverList;
+                            } else {
+                                return existingList;
+                            }
+                        });
+
+                        context.updateCardLists(updatedCardList);
+                        if (context.currentCardList && (activeList.Id === context.currentCardList.Id || emptyOverList.Id === context.currentCardList.Id)) {
+                            context.currentCardListModifier(updatedActiveList.Id === context.currentCardList.Id ? updatedActiveList : updatedOverList);
+                    }
+                }
+            }}
+
             if (!activeList || !overList || activeList === overList) {
                 return;
             }
+
 
             const activeIndex = activeList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
             if (over) {
@@ -157,13 +189,14 @@ const BoardPage = () => {
                     ...overList.cards.slice(overIndex)
                 ];
 
+
                 const updatedActiveList = { ...activeList, cards: newActiveListCards };
                 const updatedOverList = { ...overList, cards: newOverListCards };
 
                 const updatedCardList = context.currentBoard.cardLists.map(existingList => {
                     if (existingList.Id === activeList.Id) {
                         return updatedActiveList;
-                    } else if (existingList.Id === overList.Id) {
+                    } else if (overList && existingList.Id === overList.Id) {
                         return updatedOverList;
                     } else {
                         return existingList;
