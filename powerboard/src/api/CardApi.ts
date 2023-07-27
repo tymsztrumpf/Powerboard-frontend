@@ -10,4 +10,14 @@ export class CardApi {
                 cardListId: cardListId
             },
         });
+    static updateCard = async (request: CardRequest, cardId: number | undefined, cardListId: number | undefined, boardId: number | undefined) =>
+        await authorizedApi.patch("http://localhost:8080/api/card", request, {
+            params: {
+                cardId: cardId,
+                cardListId: cardListId,
+                boardId: boardId
+            },
+        });
+    static addUser = async (param: { cardId: number | undefined,  cardListId: number | undefined, boardId: number | undefined, userEmail: string | undefined; }) =>
+        await authorizedApi.patch(`http://localhost:8080/api/card/add-user?cardId=${param.cardId}&cardListId=${param.cardListId}&boardId=${param.boardId}&userEmail=${param.userEmail}`);
 }

@@ -17,7 +17,6 @@ const CardList = ({ cardList }: Props) => {
     const [isEditing, setIsEditing] = useState(false);
     const [newTitle, setNewTitle] = useState(cardList.title);
     const [cards, setCards] = useState(cardList.cards || []);
-    const [activeItem, setActiveItem] = useState<CardResponse>()
     const handleHeaderClick = () => {
         setIsEditing(true);
     };

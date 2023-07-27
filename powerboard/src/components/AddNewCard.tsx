@@ -17,7 +17,9 @@ const AddNewCard = ({ cardListId }: Props) => {
         event.preventDefault();
         try {
             const newCardResponse = await CardApi.addCard({
-                title: title
+                title: title,
+                cardListId: cardListId,
+                description: null
             }, context.currentBoard?.id, cardListId);
 
             const newCard: CardResponse = {

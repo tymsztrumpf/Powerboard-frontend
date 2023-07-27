@@ -101,6 +101,7 @@ const BoardHeader = () => {
         }
 
     }, []);
+
     useEffect(() => {
         fetchUsers();
     }, [fetchUsers])
