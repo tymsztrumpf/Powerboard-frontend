@@ -20,7 +20,7 @@ const CardList = ({ cardList }: Props) => {
     const handleHeaderClick = () => {
         setIsEditing(true);
     };
-
+    // console.log(cards)
     const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setNewTitle(event.target.value);
     };
@@ -76,12 +76,12 @@ const CardList = ({ cardList }: Props) => {
                 }
             />
             <CardContent>
-                {cards.map((card, index) => (
+                {cards.sort((a, b) => a.orderNum - b.orderNum).map((card, index) => (
                     card.id
                         ? <SortableCard key={card.id.toString()} id={card.id.toString()} cardList={cardList} card={card}/>
                         : <></>
                 ))}
-                <AddNewCard cardListId={cardList.Id}/>
+                <AddNewCard cardList={cardList}/>
             </CardContent>
         </Card>
     )

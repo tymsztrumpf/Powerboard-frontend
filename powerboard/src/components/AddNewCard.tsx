@@ -4,11 +4,12 @@ import {toast} from "react-toastify";
 import {CardApi} from "../api/CardApi";
 import {BoardContext} from "../context/BoardContext";
 import {CardResponse} from "../api/models/CardResponse";
+import {CardListResponse} from "../api/models/CardListResponse";
 
 interface Props {
-    cardListId: number
+    cardList: CardListResponse
 }
-const AddNewCard = ({ cardListId }: Props) => {
+const AddNewCard = ({ cardList }: Props) => {
     const [title, setTitle] = useState('');
     const [showForm, setShowForm] = useState(false);
     const context = useContext(BoardContext)
@@ -18,20 +19,22 @@ const AddNewCard = ({ cardListId }: Props) => {
         try {
             const newCardResponse = await CardApi.addCard({
                 title: title,
-                cardListId: cardListId,
-                description: null
-            }, context.currentBoard?.id, cardListId);
+                cardListId: cardList.Id,
+                description: null,
+            }, context.currentBoard?.id, cardList.Id);
 
             const newCard: CardResponse = {
                 id:newCardResponse.data.id,
                 title: newCardResponse.data.title,
                 description: newCardResponse.data.description,
-                executors: newCardResponse.data.executors
+                executors: newCardResponse.data.executors,
+                orderNum: newCardResponse.data.orderNum,
+                cardList: cardList
             };
 
             if(context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
-                    if (list.Id === cardListId) {
+                    if (list.Id === cardList.Id) {
                         return {...list, cards: [...list.cards, newCard]};
                     }
                     else return list
@@ -91,7 +94,7 @@ const AddNewCard = ({ cardListId }: Props) => {
                                required
                                margin="normal"
                     />
-                    <FormHelperText>
+                    <FormHelperText component="div">
                         <Grid container justifyContent="space-between">
                             <Grid item>
                                 <Button data-no-dnd="true"

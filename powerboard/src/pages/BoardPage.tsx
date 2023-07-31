@@ -38,12 +38,19 @@ import {CustomKeyboardSensor} from "../sensors/CustomKeyboardSensor";
 import BoardHeader from "../components/BoardHeader";
 import HoverableCardText from "../components/HoverableCardText";
 import CardList from "../components/CardList";
+import {BoardApi} from "../api/BoardApi";
+import {BoardRequest} from "../api/models/BoardRequest";
+import { toast } from "react-toastify";
+import {CardApi} from "../api/CardApi";
+import {CardListApi} from "../api/CardListApi";
+import {CardSwapRequest} from "../api/models/CardSwapRequest";
 
 const BoardPage = () => {
     const context = useContext(BoardContext)
     const [cards, setCards] = useState<CardResponse[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const [activeItem, setActiveItem] = useState<CardResponse>()
+    const [previousList, setPreviousList] = useState<CardListResponse | null>(null);
     const sensors = useSensors(
         useSensor(CustomMouseSensor),
         useSensor(TouchSensor),
@@ -51,22 +58,51 @@ const BoardPage = () => {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+    const swapCards = async (cards: CardResponse[], cardList: CardListResponse) => {
+        const requests: CardSwapRequest[] = cards.map(card => ({
+            id: card.id,
+            cardListId: cardList.Id,
+            orderNum: card.orderNum
+        }));
+
+        await CardApi.swapCard(requests, context.currentBoard?.id);
+    }
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
 
         setIsDragging(false);
         context.isDraggingModifier(false);
         if (!active || !over || active.id === over.id) {
+            if(over && context.currentBoard) {
+                let targetList = findCardListContainer(context.currentBoard?.cardLists, over.id as string);
+                if(targetList && previousList){
+                    const activeCardIndex = previousList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
+                    const [removedCard] = previousList.cards.splice(activeCardIndex, 1);
+                    removedCard.cardList = targetList;
+                    previousList.cards.forEach((card, index) => {
+                        card.orderNum = index + 1;
+                    });
+                    targetList.cards.forEach((card, index) => {
+                        card.orderNum = index + 1;
+                    });
+                    swapCards(targetList.cards, targetList)
+                    swapCards(previousList.cards, previousList);
+                }
+            }
             return;
         }
 
         const originalList = context.currentBoard?.cardLists.find(list => list.cards.some(card => card.id.toString() === active.id));
         if (!originalList) {
+            console.log("2")
             return;
         }
 
         const activeCardIndex = originalList.cards.findIndex(card => card.id !== undefined && card.id.toString() === active.id);
+        console.log("ACTIVE",activeCardIndex)
         if (activeCardIndex === -1) {
+            console.log("3")
             return;
         }
 
@@ -74,23 +110,42 @@ const BoardPage = () => {
         updateListWithNewCards(originalList, originalList.cards);
 
         if (!context.currentBoard?.cardLists){
+            console.log("4")
             return;
         }
 
         let targetList = findCardListContainer(context.currentBoard?.cardLists, over.id as string);
         const overCardIndex = cards.findIndex(card => card.id !== undefined && card.id.toString() === over.id);
-
         if (targetList) {
             if (!targetList.cards.some(card => card.id === removedCard.id)) {
                 if (overCardIndex !== -1) {
                     if(activeCardIndex - overCardIndex <= 0 ) {
+                        console.log("5")
+                        // DOWN
+                        let overCard = targetList.cards[overCardIndex];
+                        removedCard.orderNum = overCard.orderNum + 1
                         targetList.cards.splice(overCardIndex + 1, 0, removedCard);
+                        targetList.cards.forEach((card, index) => {
+                            card.orderNum = index + 1;
+                        });
+                        swapCards(targetList.cards, targetList)
                     }
                     else {
-                    targetList.cards.splice(overCardIndex, 0, removedCard);
+                        console.log("6")
+                        // UP
+                        let overCard = targetList.cards[overCardIndex];
+                        removedCard.orderNum = overCard.orderNum - 1
+                        targetList.cards.splice(overCardIndex, 0, removedCard);
+                        targetList.cards.forEach((card, index) => {
+                            card.orderNum = index + 1;
+                        });
+                        swapCards(targetList.cards, targetList)
                     }
                 } else {
+                    console.log("7")
                     targetList.cards.push(removedCard);
+                    removedCard.orderNum = targetList.cards.length
+                    console.log(context.currentBoard.cardLists)
                 }
                 updateListWithNewCards(targetList, targetList.cards);
             }
@@ -98,11 +153,22 @@ const BoardPage = () => {
         }
 
         targetList = context.currentBoard?.cardLists.find(list => list.cards.length === 0);
-        if (targetList && !targetList.cards.some(card => card.id === removedCard.id)) {
+        if (previousList && targetList && !targetList.cards.some(card => card.id === removedCard.id)) {
             if (overCardIndex !== -1) {
+                console.log("8")
                 targetList.cards.splice(overCardIndex, 0, removedCard);
             } else {
+                console.log("9")
                 targetList.cards.push(removedCard);
+                removedCard.cardList = targetList;
+                previousList.cards.forEach((card, index) => {
+                    card.orderNum = index + 1;
+                });
+                targetList.cards.forEach((card, index) => {
+                    card.orderNum = index + 1;
+                });
+                swapCards(targetList.cards, targetList)
+                swapCards(previousList.cards, previousList);
             }
             updateListWithNewCards(targetList, targetList.cards);
         }
@@ -191,6 +257,12 @@ const BoardPage = () => {
         context.isDraggingModifier(true)
         const { active } = event
         setActiveItem(cards.find((item) => item.id === active.id))
+        if(context.currentBoard) {
+            const currentList = findCardListContainer(context.currentBoard?.cardLists, event.active.id as string);
+            if(currentList) {
+                setPreviousList(currentList);
+            }
+        }
     }
 
     useEffect(() => {

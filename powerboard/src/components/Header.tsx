@@ -30,6 +30,7 @@ const Header = () => {
 
         await BoardApi.createBoard({
             title: title,
+            cardLists: null
         });
         setTitle('')
         handleClose()

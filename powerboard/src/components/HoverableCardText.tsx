@@ -74,7 +74,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
             await CardApi.updateCard({
                 title: newTitle,
                 cardListId: cardList.Id,
-                description: newDescription
+                description: newDescription,
             }, card.id, context.currentBoard?.id, cardList.Id);
 
             if(context.currentBoard) {

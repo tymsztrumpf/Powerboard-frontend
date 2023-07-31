@@ -12,4 +12,10 @@ export class BoardApi {
         await authorizedApi.patch(`http://localhost:8080/api/board/add-user?userEmail=${param.userEmail}&boardId=${param.boardId}`);
     static removeUser = async (param: { userEmail: string | undefined, boardId: number | undefined; }) =>
         await authorizedApi.delete(`http://localhost:8080/api/board/remove-user?userEmail=${param.userEmail}&boardId=${param.boardId}`);
+    static updateBoard = async (request: BoardRequest, boardId: number | undefined) =>
+        await authorizedApi.patch("http://localhost:8080/api/board", request, {
+            params: {
+                boardId: boardId
+            },
+        });
 }
