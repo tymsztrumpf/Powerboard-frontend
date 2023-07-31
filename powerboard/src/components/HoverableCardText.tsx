@@ -5,7 +5,7 @@ import {
     Container,
     ListTypography,
     StyledAddButton,
-    StyledBox,
+    StyledBox, StyledCDeleteForeverIcon,
     StyledCloseIcon,
     StyledModalBox,
     StyledTextareaAutosize,
@@ -156,6 +156,30 @@ const HoverableCardText = ({ card, cardList }: Props) => {
         }
 
     };
+    const handleDeleteCard = async () => {
+        try {
+            await CardApi.deleteCard(card.id, context.currentBoard?.id, cardList.Id);
+
+            if (context.currentBoard) {
+                const updatedCardLists = context.currentBoard.cardLists.map(list => {
+                    if (list.Id === cardList.Id) {
+                        return {
+                            ...list,
+                            cards: list.cards.filter(c => c.id !== card.id)
+                        };
+                    } else return list;
+                });
+
+                context.currentBoardModifier({
+                    ...context.currentBoard,
+                    cardLists: updatedCardLists,
+                });
+            }
+            toast.success("Card deleted");
+        } catch (error) {
+            toast.error("Something went wrong");
+        }
+    };
     const handleDescriptionChange = (event: { target: { value: React.SetStateAction<string>; }; }) => setNewDescription(event.target.value);
     const handleDescriptionClick = () => setIsEditingDescription(true);
 
@@ -290,6 +314,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                             )
                         }
                     </Container>
+                    <StyledCDeleteForeverIcon onClick={handleDeleteCard}/>
                 </StyledModalBox>
             </Modal>
         </>

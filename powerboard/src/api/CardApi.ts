@@ -28,4 +28,12 @@ export class CardApi {
                 boardId: boardId
             },
         });
+    static deleteCard = async (cardId: number, boardId: number | undefined, cardListId: number | undefined) =>
+        await authorizedApi.delete("http://localhost:8080/api/card", {
+            params: {
+                cardId: cardId,
+                boardId: boardId,
+                cardListId: cardListId
+            },
+        });
 }

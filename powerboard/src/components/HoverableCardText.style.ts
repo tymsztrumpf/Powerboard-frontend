@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {Box, Button, CardContent, Modal, TextareaAutosize, TextField, Typography} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export const StyledBox = styled.div<{ hover: boolean }>`
   border-radius: 15px;
@@ -104,3 +105,14 @@ export const StyledAddButton = styled(Button)`
     background: rgba(115, 115, 115, 0.5)
   }
 `
+export const StyledCDeleteForeverIcon = styled(DeleteForeverIcon)`
+margin-left: 97%;
+margin-bottom: -3.5rem;
+padding: 0.2rem;
+&:hover {
+    border-radius: 50%;
+    background: rgba(115, 115, 115, 0.5)
+   
+}
+`
+;
