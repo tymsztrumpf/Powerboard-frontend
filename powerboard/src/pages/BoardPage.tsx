@@ -1,34 +1,21 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import './BoardPage.css';
 import AddListButton from "../components/AddListButton";
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import {BoardContext} from "../context/BoardContext";
 import {
-    Autocomplete,
-    Avatar,
-    Box, Button,
     Container,
-    List, ListItem,
-    ListItemText,
-    Modal,
-    TextField,
-    Toolbar,
-    Typography
 } from "@mui/material";
-import {CustomAppBar, StyledPersonAddAltIcon, StyledModal, StyledBox, StyledButton} from "./BoardPage.style";
+import { Body } from "./BoardPage.style";
 import {
     DndContext,
-    closestCenter,
-    MouseSensor,
     TouchSensor,
     useSensor,
     useSensors,
-    KeyboardSensor, DragEndEvent, DragStartEvent, closestCorners, DragOverlay, DragOverEvent,
+    DragEndEvent, DragStartEvent, closestCorners, DragOverlay, DragOverEvent,
 } from "@dnd-kit/core";
 import {
-    arrayMove,
     verticalListSortingStrategy,
-    sortableKeyboardCoordinates, rectSortingStrategy, SortableContext
+    sortableKeyboardCoordinates, SortableContext
 } from '@dnd-kit/sortable';
 import {CardResponse} from "../api/models/CardResponse";
 import {CardListResponse} from "../api/models/CardListResponse";
@@ -38,11 +25,7 @@ import {CustomKeyboardSensor} from "../sensors/CustomKeyboardSensor";
 import BoardHeader from "../components/BoardHeader";
 import HoverableCardText from "../components/HoverableCardText";
 import CardList from "../components/CardList";
-import {BoardApi} from "../api/BoardApi";
-import {BoardRequest} from "../api/models/BoardRequest";
-import { toast } from "react-toastify";
 import {CardApi} from "../api/CardApi";
-import {CardListApi} from "../api/CardListApi";
 import {CardSwapRequest} from "../api/models/CardSwapRequest";
 
 const BoardPage = () => {
@@ -265,7 +248,7 @@ const BoardPage = () => {
 
 
     return (
-        <>
+        <Body backgroundImage={context.currentBoard?.imagePath || ''}>
             <BoardHeader />
             <div style={{ display: "flex", gap: "1rem", justifyContent: "start" }}>
             <Container>
@@ -296,7 +279,7 @@ const BoardPage = () => {
                 </DndContext>
             </Container>
             </div>
-        </>
+        </Body>
     )
 }
 export default BoardPage;

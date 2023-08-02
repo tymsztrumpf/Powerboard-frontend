@@ -6,5 +6,6 @@ export type Board = {
     title: string,
     users: UserResponse[],
     cardLists: CardListResponse[],
-    owner: UserResponse
+    owner: UserResponse,
+    imagePath: string
 }

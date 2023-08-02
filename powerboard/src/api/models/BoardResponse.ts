@@ -7,4 +7,5 @@ export type BoardResponse = {
     users: UserResponse[];
     cardLists: CardListResponse[];
     owner: UserResponse;
+    imagePath: string;
 }

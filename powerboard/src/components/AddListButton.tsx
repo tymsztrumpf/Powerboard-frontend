@@ -18,7 +18,7 @@ const AddNewCardList = () => {
             }, context.currentBoard?.id);
 
             const newCardList: CardListResponse = {
-                Id: newCardListResponse.data.id,
+                Id: newCardListResponse.data.Id,
                 title: newCardListResponse.data.title,
                 cards: []
             };

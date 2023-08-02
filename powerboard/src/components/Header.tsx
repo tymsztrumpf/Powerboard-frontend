@@ -1,4 +1,15 @@
-import {AppBar, Toolbar, Typography, Button, IconButton, Menu, Box, TextField, Switch} from '@mui/material';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button,
+    IconButton,
+    Menu,
+    Box,
+    TextField,
+    Switch,
+    FormControl, RadioGroup, FormControlLabel, Radio
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState, useContext, SyntheticEvent, useEffect} from 'react';
 import { BoardApi } from "../api/BoardApi";
@@ -7,6 +18,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {UserContext} from "../context/UserContext";
 import {ACCESS_TOKEN} from "../constants/constants";
 import {ThemeContext} from "../context/ThemeContext";
+import {Container} from "./Header.style";
 
 const Header = () => {
     const [title, setTitle] = useState('');
@@ -16,6 +28,7 @@ const Header = () => {
     const { currentUser, currentUserModifier } = useContext(UserContext);
     const { toggleTheme } = useContext(ThemeContext);
     const { isDark } = useContext(ThemeContext)
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -28,9 +41,11 @@ const Header = () => {
     const saveBoard = async (e: SyntheticEvent) => {
         e.preventDefault();
 
+        console.log(selectedImage)
         await BoardApi.createBoard({
             title: title,
-            cardLists: null
+            cardLists: null,
+            imagePath: selectedImage
         });
         setTitle('')
         handleClose()
@@ -78,8 +93,43 @@ const Header = () => {
                         >
                             <Box sx={{ p: 2 }}>
                                 <form onSubmit={saveBoard}>
-                                    <TextField id="outlined-basic" placeholder="Your new board title..." variant="outlined" value={title} onChange={e => setTitle(e.target.value)}/>
-                                    <Button variant="contained" type="submit" sx={{ mt: 2 }}>Save</Button>
+                                    <TextField
+                                        id="outlined-basic"
+                                        placeholder="Your new board title..."
+                                        variant="outlined"
+                                        value={title}
+                                        onChange={e => setTitle(e.target.value)}
+                                        style={{width: "15rem", margin: "1rem" }}
+                                    />
+                                    <RadioGroup
+                                        aria-label="images"
+                                        value={selectedImage}
+                                        onChange={(e: { target: { value: React.SetStateAction<string | null>; }; }) => setSelectedImage(e.target.value)}
+                                        style={{flexDirection: "row", justifyContent: "center", margin: "1rem -0.75rem 1rem 1rem" }}
+                                    >
+                                        {['/1.jpg', '/2.jpg', '/3.jpg'].map((img, index) => (
+                                            <FormControlLabel
+                                                key={index}
+                                                value={img}
+                                                control={<Radio style={{ display: 'none' }} />}
+                                                label={
+                                                    <img
+                                                        src={img}
+                                                        alt={`Image ${index + 1}`}
+                                                        style={{
+                                                            width: '70px',
+                                                            margin: '0.25rem',
+                                                            border: selectedImage === img ? '2px solid white' : 'none',
+                                                            borderRadius: "0.25rem"
+                                                        }}
+                                                    />
+                                                }
+                                            />
+                                        ))}
+                                    </RadioGroup>
+                                    <Container>
+                                        <Button variant="contained" type="submit" sx={{ mt: 2 }}>Save</Button>
+                                    </Container>
                                 </form>
                             </Box>
                         </Menu>

@@ -15,7 +15,7 @@ const BoardsPage = () => {
     const navigate = useNavigate();
     const context = useContext(BoardContext)
     const handleBoardClick = (board: Board) => {
-        context.currentBoardModifier({id: board.id, title: board.title, users: board.users, cardLists: board.cardLists, owner: board.owner})
+        context.currentBoardModifier({id: board.id, title: board.title, users: board.users, cardLists: board.cardLists, owner: board.owner, imagePath: board.imagePath})
         navigate(`/board/${board.id}`);
     }
 
@@ -46,7 +46,7 @@ const BoardsPage = () => {
                         <Card sx={{ width: '100%' }} onClick={() => handleBoardClick(board)}>
                             <CardMedia
                                 component="img"
-                                image={TestImage}
+                                image={board.imagePath}
                                 alt="Board image"
                                 style={{ height: '11.25rem' }}
                             />
