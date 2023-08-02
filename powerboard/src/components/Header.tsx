@@ -41,7 +41,6 @@ const Header = () => {
     const saveBoard = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        console.log(selectedImage)
         await BoardApi.createBoard({
             title: title,
             cardLists: null,
