@@ -180,10 +180,11 @@ const BoardPage = () => {
             return;
         }
 
+
         let overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
 
         if (!overList) {
-            overList = context.currentBoard.cardLists.find(list => list.cards.length === 0);
+            overList = context.currentBoard.cardLists.find(list => list.Id === over?.id);
         }
 
         if (!overList || activeList === overList) {
