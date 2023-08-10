@@ -2,10 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import './BoardPage.css';
 import AddListButton from "../components/AddListButton";
 import {BoardContext} from "../context/BoardContext";
-import {
-    Container,
-} from "@mui/material";
-import { Body } from "./BoardPage.style";
+import {Body, Container} from "./BoardPage.style";
 import {
     DndContext,
     TouchSensor,
@@ -250,7 +247,7 @@ const BoardPage = () => {
     return (
         <Body backgroundImage={context.currentBoard?.imagePath || ''}>
             <BoardHeader />
-            <div style={{ display: "flex", gap: "1rem", justifyContent: "start" }}>
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "start"}}>
             <Container>
                 <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
                     <SortableContext items={

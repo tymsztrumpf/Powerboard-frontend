@@ -59,7 +59,7 @@ const Header = () => {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Toolbar>
                 <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
                 </IconButton>
@@ -127,7 +127,7 @@ const Header = () => {
                                         ))}
                                     </RadioGroup>
                                     <Container>
-                                        <Button variant="contained" type="submit" sx={{ mt: 2 }}>Save</Button>
+                                        <Button variant="contained" type="submit" disabled={!selectedImage} sx={{ mt: 2 }}>Save</Button>
                                     </Container>
                                 </form>
                             </Box>

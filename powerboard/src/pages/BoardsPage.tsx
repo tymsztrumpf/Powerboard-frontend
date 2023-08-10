@@ -2,13 +2,12 @@ import {useCallback, useContext, useEffect, useState} from "react";
 import {BoardApi} from "../api/BoardApi";
 
 import {toast} from "react-toastify";
-import TestImage from '../resources/img/test.jpg';
 import {useNavigate} from "react-router-dom";
 import {BoardResponse} from "../api/models/BoardResponse";
 import {BoardContext} from "../context/BoardContext";
 import {Board} from "../models/Board";
-import {Card, CardContent, CardMedia, Container, Grid, Typography} from "@mui/material";
-import {UserContext} from "../context/UserContext";
+import {Card, CardContent, CardMedia, Grid, Typography} from "@mui/material";
+import {Container} from "./BoardsPage.style";
 
 const BoardsPage = () => {
     const [boards, setBoards] = useState<BoardResponse[]>([]);
@@ -39,7 +38,7 @@ const BoardsPage = () => {
 
 
     return (
-        <Container>
+            <Container>
             <Grid container spacing={7}>
                 {boards.map((board, index) => (
                     <Grid item xs={12} key={index}>
@@ -59,7 +58,7 @@ const BoardsPage = () => {
                     </Grid>
                 ))}
             </Grid>
-        </Container>
+            </Container>
     )
 }
 

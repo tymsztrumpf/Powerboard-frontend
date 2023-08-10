@@ -43,8 +43,17 @@ export const Body = styled.div<{ backgroundImage: string }>`
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  height: 100vh; 
+  height: 100vh;
   opacity: 1;
   position: relative; 
-  z-index: 0; 
+  z-index: 0;
+  width: fit-content;
+  min-width: 100%;
+`;
+
+export const Container = styled.div`
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 6rem;
 `;

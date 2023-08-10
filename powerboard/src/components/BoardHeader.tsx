@@ -107,7 +107,7 @@ const BoardHeader = () => {
     }, [fetchUsers])
 
     return (
-        <CustomAppBar position="static" color="primary" enableColorOnDark>
+        <CustomAppBar position="fixed" color="primary" enableColorOnDark sx={{top: '6rem'}}>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     {context.currentBoard?.title}
