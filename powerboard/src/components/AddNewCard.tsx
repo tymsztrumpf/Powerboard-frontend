@@ -46,9 +46,8 @@ const AddNewCard = ({ cardList }: Props) => {
                 });
             }
             setCardAdded(true)
-            toast.success("Dodano Karte");
         } catch {
-            toast.error("Błąd serwera tutaj");
+            toast.error("Server error");
         }
     };
 
@@ -81,7 +80,7 @@ const AddNewCard = ({ cardList }: Props) => {
                         onClick={handleButtonClick}
                         sx={{ width: '16rem', borderRadius: '0.5rem'}}
                 >
-                    + Dodaj kartę
+                    + Add card
                 </Button>
             ) : (
                 <Box component="form" onSubmit={createCard} sx={{ width: '16rem' }}>

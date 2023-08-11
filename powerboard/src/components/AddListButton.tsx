@@ -68,7 +68,7 @@ const AddNewCardList = () => {
                         onClick={handleButtonClick}
                         sx={{ width: '18rem', borderRadius: '0.5rem'}}
                     >
-                        + Add new list
+                        + Add list
                     </Button>
                 )}
                 {showForm && (

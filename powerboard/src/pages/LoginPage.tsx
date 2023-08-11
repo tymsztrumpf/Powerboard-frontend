@@ -5,6 +5,7 @@ import {AuthApi} from "../api/AuthApi";
 import {ACCESS_TOKEN} from "../constants/constants";
 import {UserContext} from "../context/UserContext";
 import {Box, Button, Container, CssBaseline, TextField, Typography} from "@mui/material";
+import {StyledContainer} from "./LoginPage.style";
 const LoginPage = () => {
 
     const navigate = useNavigate()
@@ -28,6 +29,7 @@ const LoginPage = () => {
     }
     return (
         <Container component="main" maxWidth="xs">
+            <StyledContainer>
             <Box
                 sx={{
                     marginTop: 8,
@@ -76,6 +78,7 @@ const LoginPage = () => {
                     </Button>
                 </Box>
             </Box>
+            </StyledContainer>
         </Container>
     );
 }

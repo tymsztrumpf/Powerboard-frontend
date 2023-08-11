@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import './BoardPage.css';
+import './BoardsPage.css';
 import AddListButton from "../components/AddListButton";
 import {BoardContext} from "../context/BoardContext";
 import {Body, Container} from "./BoardPage.style";

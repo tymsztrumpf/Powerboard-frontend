@@ -2,6 +2,7 @@ import {SyntheticEvent, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {AuthApi} from "../api/AuthApi";
 import {Box, Button, Container, CssBaseline, TextField, Typography} from "@mui/material";
+import {StyledContainer} from "./SignupPage.style";
 
 const SignupPage = () => {
 
@@ -26,6 +27,7 @@ const SignupPage = () => {
 
     return (
         <Container component="main" maxWidth="xs">
+            <StyledContainer>
             <Box
                 sx={{
                     marginTop: 8,
@@ -97,6 +99,7 @@ const SignupPage = () => {
 
                 </Box>
             </Box>
+            </StyledContainer>
         </Container>
     )
 }

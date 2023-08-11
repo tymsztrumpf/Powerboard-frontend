@@ -2,8 +2,6 @@ import {createContext, useEffect, useState} from 'react';
 import {createTheme} from "@mui/material/styles";
 import {ThemeProvider} from "@mui/material";
 
-
-
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',

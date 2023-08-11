@@ -87,9 +87,9 @@ const BoardHeader = () => {
                 setUsers(updatedUserList);
             }
 
-            toast.success("Usunięto użytkownika");
+            toast.success("User removed");
         } catch {
-            toast.error("Błąd serwera przy usuwaniu użytkownika");
+            toast.error("Server error");
         }
     };
     const fetchUsers = useCallback(async () => {
@@ -107,7 +107,7 @@ const BoardHeader = () => {
     }, [fetchUsers])
 
     return (
-        <CustomAppBar position="fixed" color="primary" enableColorOnDark sx={{top: '6rem'}}>
+        <CustomAppBar position="fixed" enableColorOnDark>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     {context.currentBoard?.title}

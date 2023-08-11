@@ -21,10 +21,8 @@ function App() {
                     <UserContextProvider>
                         <BoardContextProvider>
                             <Header/>
-                            <main>
                                 <AppRouter/>
                                 <ToastContainer/>
-                            </main>
                         </BoardContextProvider>
                     </UserContextProvider>
                 </CssBaseline>
