@@ -1,12 +1,12 @@
-import {AppBar, Autocomplete, Box, Button} from "@mui/material";
-import styled, {withTheme} from "styled-components";
+import {AppBar, Box, Button} from "@mui/material";
+import styled from "styled-components";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import {Theme} from "@mui/system";
 export const CustomAppBar = styled(AppBar)`
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0.25, 0.25);
   backdrop-filter: blur(10px);
   margin-top: -3rem;
   margin-bottom: 2rem;
+  top: 7rem;
 `
 export const StyledPersonAddAltIcon = styled(PersonAddAltIcon)`
     margin: 1rem;
@@ -43,7 +43,8 @@ export const Body = styled.div<{ backgroundImage: string }>`
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  height: 100vh;
+  height: fit-content;
+  min-height: 100vh;
   opacity: 1;
   position: relative; 
   z-index: 0;
@@ -53,7 +54,7 @@ export const Body = styled.div<{ backgroundImage: string }>`
 
 export const Container = styled.div`
   width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 6rem;
+  margin-top: 11rem;
+  margin-right: 3rem;
+  margin-left: 3rem;
 `;

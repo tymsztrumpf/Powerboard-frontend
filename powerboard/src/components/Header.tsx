@@ -56,7 +56,12 @@ const Header = () => {
         localStorage.removeItem('ACCESS_TOKEN');
         localStorage.removeItem('currentUser');
         navigate("/");
+        window.location.reload()
     };
+
+    useEffect(() => {
+        console.log(currentUser, "current userrrrr")
+    }, [currentUser]);
 
     return (
         <AppBar position="fixed">

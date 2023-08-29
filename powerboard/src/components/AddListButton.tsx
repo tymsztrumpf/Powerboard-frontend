@@ -32,7 +32,7 @@ const AddNewCardList = () => {
                 });
             }
             setCardAdded(true)
-            toast.success("Card added");
+            toast.success("Cardlist added");
         } catch {
             toast.error("Server error");
         }

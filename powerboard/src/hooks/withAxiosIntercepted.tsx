@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from "react";
-import axios, {AxiosRequestConfig, InternalAxiosRequestConfig} from "axios";
+import axios, {AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig} from "axios";
 import { ACCESS_TOKEN } from "../constants/constants";
 import { useNavigate } from "react-router-dom";
 import {UserContext} from "../context/UserContext";
@@ -44,6 +44,7 @@ export function withAxiosIntercepted<T extends JSX.IntrinsicAttributes>(
                         localStorage.removeItem('ACCESS_TOKEN');
                         localStorage.removeItem('currentUser');
                         navigate("/login");
+                        window.location.reload()
                     }
 
                     return Promise.reject(error);
