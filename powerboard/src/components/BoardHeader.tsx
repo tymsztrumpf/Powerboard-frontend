@@ -62,10 +62,10 @@ const BoardHeader = () => {
                 setUsers(updatedUserList);
             }
 
-            toast.success("Dodano Uzytkownika");
+            toast.success("User added");
         } catch {
 
-            toast.error("Błąd serwera przy dodawaniua uzytkownika");
+            toast.error("Error while adding user");
         }
 
     };
@@ -97,7 +97,7 @@ const BoardHeader = () => {
             const response = await UserApi.getAllUsers();
             setUsers(response.data)
         } catch {
-            toast.error("Bład serwera")
+            toast.error("Server error")
         }
 
     }, []);

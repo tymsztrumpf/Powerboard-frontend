@@ -149,10 +149,9 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                 });
 
             }
-            toast.success("Dodano Uzytkownika");
         } catch {
 
-            toast.error("Błąd serwera przy dodawaniua uzytkownika");
+            toast.error("Server error");
         }
 
     };
@@ -260,7 +259,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                         </TitleContainer>
                         <BodyContainer>
                             <ListTypography fontSize={"small"} id="modal-modal-description">
-                                Jest na liście {cardList.title}
+                                On list {cardList.title}
                             </ListTypography>
                         </BodyContainer>
 
@@ -309,7 +308,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                                 />
                             ) : (
                                 <StyledTypography fontSize={"small"} id="modal-modal-description" variant="h6" onClick={handleDescriptionClick}>
-                                    {card.description ? card.description : "Dodaj bardziej szczegółowy opis..."}
+                                    {card.description ? card.description : "Add description..."}
                                 </StyledTypography>
                             )
                         }

@@ -50,6 +50,7 @@ const Header = () => {
         handleClose()
         toast.success("Board created");
         navigate("/boards");
+        window.location.reload()
     };
     const logout = () => {
         currentUserModifier(null);
