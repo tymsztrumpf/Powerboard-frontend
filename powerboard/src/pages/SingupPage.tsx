@@ -1,8 +1,8 @@
-import {SyntheticEvent, useState} from "react";
+import {SyntheticEvent, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {AuthApi} from "../api/AuthApi";
 import {Box, Button, Container, CssBaseline, TextField, Typography} from "@mui/material";
-import {StyledContainer} from "./SignupPage.style";
+import {StyledContainer, ValidationError} from "./SignupPage.style";
 
 const SignupPage = () => {
 
@@ -11,7 +11,11 @@ const SignupPage = () => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isDataValid, setIsDataValid] = useState<boolean>(false);
+    const [isRepeatedPasswordValid, setIsRepeatedPasswordValid] = useState<boolean>(true);
+    const [repeatedPassword, setRepeatedPassword] = useState('')
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault()
 
@@ -24,6 +28,25 @@ const SignupPage = () => {
 
         navigate('/login');
     }
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePassword = (password: string) => {
+        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        return passwordRegex.test(password);
+    }
+    const validateRepeatedPassword = (repeatedPassword: string) => {
+        return password == repeatedPassword;
+    };
+
+    useEffect(() => {
+        setIsEmailValid(validateEmail(email));
+        setIsPasswordValid(validatePassword(password));
+        setIsRepeatedPasswordValid(validateRepeatedPassword(repeatedPassword));
+        setIsDataValid((isPasswordValid && isEmailValid && isRepeatedPasswordValid))
+    }, [email, password, repeatedPassword, isPasswordValid, isEmailValid, isRepeatedPasswordValid]);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -75,6 +98,7 @@ const SignupPage = () => {
                         value={email}
                         onChange={e=>setEmail(e.target.value)}
                     />
+                    {!isEmailValid && email.length !== 0 && <ValidationError>This is not a valid email</ValidationError>}
                     <TextField
                         margin="normal"
                         required
@@ -87,11 +111,26 @@ const SignupPage = () => {
                         value={password}
                         onChange={e=>setPassword(e.target.value)}
                     />
+                    {!isPasswordValid && password.length !== 0 && <ValidationError>Password must be at least 8 characters long and contain one digit, one lowercase letter, and one uppercase letter</ValidationError>}
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="repeatedPassword"
+                        label="Repeat password"
+                        type="password"
+                        id="repeatedPassword"
+                        autoComplete="current-password"
+                        value={repeatedPassword}
+                        onChange={e=>setRepeatedPassword(e.target.value)}
+                    />
+                    {!isRepeatedPasswordValid && password.length !== 0 && <ValidationError>Passwords do not match</ValidationError>}
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
+                        disabled={!isDataValid}
                         sx={{ mt: 3, mb: 2 }}
                     >
                         Sign Up
