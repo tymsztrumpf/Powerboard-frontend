@@ -12,6 +12,7 @@ Backend
 * JJWT
 * Lombok
 * PostgreSQL
+* Websocket
 
 Frontend
 * Typescript
