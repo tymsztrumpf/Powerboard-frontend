@@ -7,6 +7,7 @@ import AddNewCard from "./AddNewCard";
 import {CardListApi} from "../api/CardListApi";
 import {CardResponse} from "../api/models/CardResponse";
 import SortableCard from "./SortableCard";
+import {sendMessage} from "../message/MessageSender";
 interface Props {
     cardList: CardListResponse
 }
@@ -42,6 +43,7 @@ const CardList = ({ cardList }: Props) => {
                     ...context.currentBoard,
                     cardLists: updatedCardList,
                 });
+                sendMessage(context.currentBoard.id.toString())
             }
             toast.success("Card title updated");
         } catch (error) {

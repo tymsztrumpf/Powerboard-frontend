@@ -19,6 +19,7 @@ import {UserResponse} from "../api/models/UserResponse";
 import {toast} from "react-toastify";
 import {UserContext} from "../context/UserContext";
 import {UserApi} from "../api/UserApi";
+import {sendMessage} from "../message/MessageSender";
 
 const BoardHeader = () => {
     const context = useContext(BoardContext)
@@ -60,6 +61,7 @@ const BoardHeader = () => {
                 });
 
                 setUsers(updatedUserList);
+                sendMessage(context.currentBoard.id.toString())
             }
 
             toast.success("User added");

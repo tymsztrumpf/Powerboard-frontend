@@ -5,6 +5,7 @@ import {CardApi} from "../api/CardApi";
 import {BoardContext} from "../context/BoardContext";
 import {CardResponse} from "../api/models/CardResponse";
 import {CardListResponse} from "../api/models/CardListResponse";
+import {sendMessage} from "../message/MessageSender";
 
 interface Props {
     cardList: CardListResponse
@@ -44,6 +45,7 @@ const AddNewCard = ({ cardList }: Props) => {
                     ...context.currentBoard,
                     cardLists: updatedCardList,
                 });
+                sendMessage(context.currentBoard?.id.toString());
             }
             setCardAdded(true)
         } catch {

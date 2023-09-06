@@ -4,6 +4,8 @@ import {CardListApi} from "../api/CardListApi";
 import {toast} from "react-toastify";
 import {BoardContext} from "../context/BoardContext";
 import {CardListResponse} from "../api/models/CardListResponse";
+import {sendMessage} from "../message/MessageSender";
+
 const AddNewCardList = () => {
 
     const [showForm, setShowForm] = useState(false);
@@ -30,6 +32,7 @@ const AddNewCardList = () => {
                     ...context.currentBoard,
                     cardLists: updatedCardLists
                 });
+                sendMessage(context.currentBoard?.id.toString());
             }
             setCardAdded(true)
             toast.success("Cardlist added");

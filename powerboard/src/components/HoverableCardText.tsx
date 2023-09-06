@@ -26,6 +26,7 @@ import {UserResponse} from "../api/models/UserResponse";
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import CommentIcon from '@mui/icons-material/Comment';
 import AddIcon from '@mui/icons-material/Add';
+import {sendMessage} from "../message/MessageSender";
 
 interface Props {
     cardList: CardListResponse
@@ -102,6 +103,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                         description: newDescription
                     });
                 }
+                sendMessage(context.currentBoard.id.toString())
             }
             toast.success("Card title updated");
         } catch (error) {
@@ -147,7 +149,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                     ...context.currentBoard,
                     cardLists: updatedCardLists,
                 });
-
+                sendMessage(context.currentBoard.id.toString())
             }
         } catch {
 

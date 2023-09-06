@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import './BoardsPage.css';
 import AddListButton from "../components/AddListButton";
 import {BoardContext} from "../context/BoardContext";
@@ -24,6 +24,15 @@ import HoverableCardText from "../components/HoverableCardText";
 import CardList from "../components/CardList";
 import {CardApi} from "../api/CardApi";
 import {CardSwapRequest} from "../api/models/CardSwapRequest";
+import {UserContext} from "../context/UserContext";
+import {BoardApi} from "../api/BoardApi";
+import {Board} from "../models/Board";
+import {BoardResponse} from "../api/models/BoardResponse";
+import {toast} from "react-toastify";
+import {ACCESS_TOKEN} from "../constants/constants";
+import SockJS from "sockjs-client";
+import {Stomp} from "@stomp/stompjs";
+import {sendMessage} from "../message/MessageSender";
 
 const BoardPage = () => {
     const context = useContext(BoardContext)
@@ -53,6 +62,9 @@ const BoardPage = () => {
 
         setIsDragging(false);
         context.isDraggingModifier(false);
+        if(context.currentBoard) {
+            sendMessage(context.currentBoard?.id.toString());
+        }
 
         if(context.currentBoard && over) {
             let targetList = findCardListContainer(context.currentBoard?.cardLists, over.id as string);
@@ -239,10 +251,45 @@ const BoardPage = () => {
             }
         }
     }
+    const fetchBoard = useCallback(async (boardId: string) => {
+        try {
+            const response = await BoardApi.getBoard({boardId: boardId});
+            context.currentBoardModifier(response.data)
+        } catch {
+            toast.error("Server error")
+        }
+
+    }, []);
 
     useEffect(() => {
         setCards(context.currentCardList?.cards || []);
     }, [context.currentCardList]);
+
+    useEffect(() => {
+        const sock = new SockJS('http://localhost:8080/stomp');
+        const client = Stomp.over(sock);
+
+        const connectCallback = () => {
+            client.subscribe('/topic/messages', (payload) => {
+                const newMessage = JSON.parse(payload.body).message;
+                if(newMessage){
+                    if(context.currentBoard){
+                        let id: string = context.currentBoard.id.toString()
+                        if(newMessage === id) {
+                            fetchBoard(id)
+                        }
+                    }
+                }
+            });
+        };
+
+        client.connect({}, connectCallback);
+
+        return () => {
+            client.disconnect(() => {
+            });
+        };
+    }, []);
 
 
     return (
