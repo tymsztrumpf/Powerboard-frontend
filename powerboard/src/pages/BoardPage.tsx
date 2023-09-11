@@ -50,7 +50,7 @@ const BoardPage = () => {
     const swapCards = async (cards: CardResponse[], cardList: CardListResponse) => {
         const requests: CardSwapRequest[] = cards.map(card => ({
             id: card.id,
-            cardListId: cardList.Id,
+            cardListId: cardList.id,
             orderNum: card.orderNum
         }));
 
@@ -169,7 +169,7 @@ const BoardPage = () => {
     const updateListWithNewCards = (list: CardListResponse, newCards: CardResponse[]) => {
         if (context.currentBoard) {
             const updatedCardList = context.currentBoard.cardLists.map(existingList => {
-                if (existingList.Id === list.Id) {
+                if (existingList.id === list.id) {
                     return {...existingList, cards: newCards};
                 } else {
                     return existingList;
@@ -178,7 +178,7 @@ const BoardPage = () => {
 
             context.updateCardLists(updatedCardList);
 
-            if (context.currentCardList && list.Id === context.currentCardList.Id) {
+            if (context.currentCardList && list.id === context.currentCardList.id) {
                 context.currentCardListModifier({...context.currentCardList, cards: newCards});
             }
         }
@@ -196,7 +196,7 @@ const BoardPage = () => {
         let overList = over ? findCardListContainer(context.currentBoard.cardLists, over.id as string) : null;
 
         if (!overList) {
-            overList = context.currentBoard.cardLists.find(list => list.Id === over?.id);
+            overList = context.currentBoard.cardLists.find(list => list.id === over?.id);
         }
 
         if (!overList || activeList === overList) {
@@ -224,9 +224,9 @@ const BoardPage = () => {
         const updatedOverList = { ...overList, cards: newOverListCards };
 
         const updatedCardList = context.currentBoard.cardLists.map(existingList => {
-            if (existingList.Id === activeList.Id) {
+            if (existingList.id === activeList.id) {
                 return updatedActiveList;
-            } else if (overList && existingList.Id === overList.Id) {
+            } else if (overList && existingList.id === overList.id) {
                 return updatedOverList;
             } else {
                 return existingList;
@@ -234,8 +234,8 @@ const BoardPage = () => {
         });
 
         context.updateCardLists(updatedCardList);
-        if (context.currentCardList && (activeList.Id === context.currentCardList.Id || overList.Id === context.currentCardList.Id)) {
-            context.currentCardListModifier(updatedActiveList.Id === context.currentCardList.Id ? updatedActiveList : updatedOverList);
+        if (context.currentCardList && (activeList.id === context.currentCardList.id || overList.id === context.currentCardList.id)) {
+            context.currentCardListModifier(updatedActiveList.id === context.currentCardList.id ? updatedActiveList : updatedOverList);
         }
     };
 
@@ -304,12 +304,12 @@ const BoardPage = () => {
                             : []
                     } strategy={verticalListSortingStrategy}>
                         <div style={{ display: 'flex', gap: '1rem' }}>
-                            {context.currentBoard?.cardLists.sort((a, b) => a.Id - b.Id).map((cardList, index) => (
-                                <div key={`div-${cardList.Id}`}>
+                            {context.currentBoard?.cardLists.sort((a, b) => a.id - b.id).map((cardList, index) => (
+                                <div key={`div-${cardList.id}`}>
                                     {
                                         context.isDragging ?
-                                            <SortableCardList cardList={cardList} key={cardList.Id}/> :
-                                            <CardList cardList={cardList} key={cardList.Id}/>
+                                            <SortableCardList cardList={cardList} key={cardList.id}/> :
+                                            <CardList cardList={cardList} key={cardList.id}/>
                                     }
                                 </div>
                             ))}

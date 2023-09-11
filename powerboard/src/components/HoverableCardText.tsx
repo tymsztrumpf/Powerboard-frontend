@@ -74,13 +74,13 @@ const HoverableCardText = ({ card, cardList }: Props) => {
 
             await CardApi.updateCard({
                 title: newTitle,
-                cardListId: cardList.Id,
+                cardListId: cardList.id,
                 description: newDescription,
-            }, card.id, context.currentBoard?.id, cardList.Id);
+            }, card.id, context.currentBoard?.id, cardList.id);
 
             if(context.currentBoard) {
                 const updatedCardLists = context.currentBoard.cardLists.map(list => {
-                    if (list.Id === cardList.Id) {
+                    if (list.id === cardList.id) {
                         return {
                             ...list,
                             cards: list.cards.map(c => {
@@ -117,7 +117,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
         try {
             const newUserResponse = await CardApi.addUser({
                 cardId: card.id,
-                cardListId: cardList.Id,
+                cardListId: cardList.id,
                 boardId: context.currentBoard?.id,
                 userEmail: user.email,
             });
@@ -159,11 +159,11 @@ const HoverableCardText = ({ card, cardList }: Props) => {
     };
     const handleDeleteCard = async () => {
         try {
-            await CardApi.deleteCard(card.id, context.currentBoard?.id, cardList.Id);
+            await CardApi.deleteCard(card.id, context.currentBoard?.id, cardList.id);
 
             if (context.currentBoard) {
                 const updatedCardLists = context.currentBoard.cardLists.map(list => {
-                    if (list.Id === cardList.Id) {
+                    if (list.id === cardList.id) {
                         return {
                             ...list,
                             cards: list.cards.filter(c => c.id !== card.id)

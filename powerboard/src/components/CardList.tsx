@@ -30,11 +30,11 @@ const CardList = ({ cardList }: Props) => {
         try {
             await CardListApi.changeTitle({
                 title: newTitle
-            }, context.currentBoard?.id, cardList.Id);
+            }, context.currentBoard?.id, cardList.id);
 
             if(context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
-                    if (list.Id === cardList.Id) {
+                    if (list.id === cardList.id) {
                         return {...list, title: newTitle};
                     } else return list
                 })

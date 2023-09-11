@@ -20,9 +20,9 @@ const AddNewCard = ({ cardList }: Props) => {
         try {
             const newCardResponse = await CardApi.addCard({
                 title: title,
-                cardListId: cardList.Id,
+                cardListId: cardList.id,
                 description: null,
-            }, context.currentBoard?.id, cardList.Id);
+            }, context.currentBoard?.id, cardList.id);
 
             const newCard: CardResponse = {
                 id:newCardResponse.data.id,
@@ -35,7 +35,7 @@ const AddNewCard = ({ cardList }: Props) => {
 
             if(context.currentBoard) {
                 const updatedCardList = context.currentBoard.cardLists.map(list => {
-                    if (list.Id === cardList.Id) {
+                    if (list.id === cardList.id) {
                         return {...list, cards: [...list.cards, newCard]};
                     }
                     else return list

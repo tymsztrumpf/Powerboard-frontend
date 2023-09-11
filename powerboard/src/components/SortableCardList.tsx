@@ -18,7 +18,7 @@ const SortableCardList: React.FC<SortableCardListProps> = ({cardList}) => {
         transform,
         transition,
         isDragging,
-    } = useSortable({id: cardList.Id});
+    } = useSortable({id: cardList.id});
 
     const style = {
         transform: CSS.Translate.toString(transform),

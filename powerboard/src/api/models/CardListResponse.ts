@@ -1,7 +1,7 @@
 import {CardResponse} from "./CardResponse";
 
 export type CardListResponse = {
-    Id: number
+    id: number
     title: string
     cards: CardResponse[]
 }
