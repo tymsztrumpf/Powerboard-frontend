@@ -4,7 +4,7 @@ import {CardListApi} from "../api/CardListApi";
 import {toast} from "react-toastify";
 import {BoardContext} from "../context/BoardContext";
 import {CardListResponse} from "../api/models/CardListResponse";
-import {sendMessage} from "../message/MessageSender";
+import {sendMessage, sendMessageWithBoardUpdate} from "../message/MessageSender";
 
 const AddNewCardList = () => {
 
@@ -32,7 +32,15 @@ const AddNewCardList = () => {
                     ...context.currentBoard,
                     cardLists: updatedCardLists
                 });
-                sendMessage(context.currentBoard?.id.toString());
+                // sendMessage(context.currentBoard?.id.toString());
+                console.log(context.currentBoard)
+                sendMessageWithBoardUpdate({
+                    id: context.currentBoard.id,
+                    title: context.currentBoard.title,
+                    users: context.currentBoard.users,
+                    cardLists: updatedCardLists,
+                    owner: context.currentBoard.owner,
+                    imagePath: context.currentBoard.imagePath})
             }
             setCardAdded(true)
             toast.success("Cardlist added");

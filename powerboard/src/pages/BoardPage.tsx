@@ -271,12 +271,12 @@ const BoardPage = () => {
 
         const connectCallback = () => {
             client.subscribe('/topic/messages', (payload) => {
-                const newMessage = JSON.parse(payload.body).message;
+                const newMessage = JSON.parse(payload.body);
                 if(newMessage){
                     if(context.currentBoard){
                         let id: string = context.currentBoard.id.toString()
-                        if(newMessage === id) {
-                            fetchBoard(id)
+                        if(newMessage.id.toString() === id) {
+                            context.currentBoardModifier(newMessage)
                         }
                     }
                 }
