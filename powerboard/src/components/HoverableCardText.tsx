@@ -26,7 +26,7 @@ import {UserResponse} from "../api/models/UserResponse";
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import CommentIcon from '@mui/icons-material/Comment';
 import AddIcon from '@mui/icons-material/Add';
-import {sendMessage} from "../message/MessageSender";
+import {sendMessageWithBoardUpdate} from "../message/MessageSender";
 
 interface Props {
     cardList: CardListResponse
@@ -76,7 +76,7 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                 title: newTitle,
                 cardListId: cardList.id,
                 description: newDescription,
-            }, card.id, context.currentBoard?.id, cardList.id);
+            }, card.id, cardList.id, context.currentBoard?.id);
 
             if(context.currentBoard) {
                 const updatedCardLists = context.currentBoard.cardLists.map(list => {
@@ -103,7 +103,13 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                         description: newDescription
                     });
                 }
-                sendMessage(context.currentBoard.id.toString())
+                sendMessageWithBoardUpdate({
+                    id: context.currentBoard.id,
+                    title: context.currentBoard.title,
+                    users: context.currentBoard.users,
+                    cardLists: updatedCardLists,
+                    owner: context.currentBoard.owner,
+                    imagePath: context.currentBoard.imagePath})
             }
             toast.success("Card title updated");
         } catch (error) {
@@ -125,7 +131,8 @@ const HoverableCardText = ({ card, cardList }: Props) => {
             const newUser: UserResponse = {
                 email: newUserResponse.data.email,
                 firstName: newUserResponse.data.firstName,
-                lastName: newUserResponse.data.lastName
+                lastName: newUserResponse.data.lastName,
+                role: newUserResponse.data.role
             };
 
             if(context.currentBoard) {
@@ -149,7 +156,13 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                     ...context.currentBoard,
                     cardLists: updatedCardLists,
                 });
-                sendMessage(context.currentBoard.id.toString())
+                sendMessageWithBoardUpdate({
+                    id: context.currentBoard.id,
+                    title: context.currentBoard.title,
+                    users: context.currentBoard.users,
+                    cardLists: updatedCardLists,
+                    owner: context.currentBoard.owner,
+                    imagePath: context.currentBoard.imagePath})
             }
         } catch {
 
@@ -175,6 +188,13 @@ const HoverableCardText = ({ card, cardList }: Props) => {
                     ...context.currentBoard,
                     cardLists: updatedCardLists,
                 });
+                sendMessageWithBoardUpdate({
+                    id: context.currentBoard.id,
+                    title: context.currentBoard.title,
+                    users: context.currentBoard.users,
+                    cardLists: updatedCardLists,
+                    owner: context.currentBoard.owner,
+                    imagePath: context.currentBoard.imagePath})
             }
             toast.success("Card deleted");
         } catch (error) {

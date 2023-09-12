@@ -4,7 +4,7 @@ import {CardListApi} from "../api/CardListApi";
 import {toast} from "react-toastify";
 import {BoardContext} from "../context/BoardContext";
 import {CardListResponse} from "../api/models/CardListResponse";
-import {sendMessage, sendMessageWithBoardUpdate} from "../message/MessageSender";
+import {sendMessageWithBoardUpdate} from "../message/MessageSender";
 
 const AddNewCardList = () => {
 
@@ -32,8 +32,6 @@ const AddNewCardList = () => {
                     ...context.currentBoard,
                     cardLists: updatedCardLists
                 });
-                // sendMessage(context.currentBoard?.id.toString());
-                console.log(context.currentBoard)
                 sendMessageWithBoardUpdate({
                     id: context.currentBoard.id,
                     title: context.currentBoard.title,

@@ -5,7 +5,7 @@ import {CardApi} from "../api/CardApi";
 import {BoardContext} from "../context/BoardContext";
 import {CardResponse} from "../api/models/CardResponse";
 import {CardListResponse} from "../api/models/CardListResponse";
-import {sendMessage} from "../message/MessageSender";
+import {sendMessageWithBoardUpdate} from "../message/MessageSender";
 
 interface Props {
     cardList: CardListResponse
@@ -34,18 +34,23 @@ const AddNewCard = ({ cardList }: Props) => {
             };
 
             if(context.currentBoard) {
-                const updatedCardList = context.currentBoard.cardLists.map(list => {
+                const updatedCardLists = context.currentBoard.cardLists.map(list => {
                     if (list.id === cardList.id) {
                         return {...list, cards: [...list.cards, newCard]};
                     }
                     else return list
                 })
-
                 context.currentBoardModifier({
                     ...context.currentBoard,
-                    cardLists: updatedCardList,
+                    cardLists: updatedCardLists,
                 });
-                sendMessage(context.currentBoard?.id.toString());
+                sendMessageWithBoardUpdate({
+                    id: context.currentBoard.id,
+                    title: context.currentBoard.title,
+                    users: context.currentBoard.users,
+                    cardLists: updatedCardLists,
+                    owner: context.currentBoard.owner,
+                    imagePath: context.currentBoard.imagePath})
             }
             setCardAdded(true)
         } catch {

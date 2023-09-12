@@ -19,7 +19,7 @@ import {UserResponse} from "../api/models/UserResponse";
 import {toast} from "react-toastify";
 import {UserContext} from "../context/UserContext";
 import {UserApi} from "../api/UserApi";
-import {sendMessage} from "../message/MessageSender";
+import {sendMessageWithBoardUpdate} from "../message/MessageSender";
 
 const BoardHeader = () => {
     const context = useContext(BoardContext)
@@ -49,7 +49,8 @@ const BoardHeader = () => {
             const newUser: UserResponse = {
                 email: newUserResponse.data.email,
                 firstName: newUserResponse.data.firstName,
-                lastName: newUserResponse.data.lastName
+                lastName: newUserResponse.data.lastName,
+                role: newUserResponse.data.role
             };
 
             if(context.currentBoard) {
@@ -61,7 +62,13 @@ const BoardHeader = () => {
                 });
 
                 setUsers(updatedUserList);
-                sendMessage(context.currentBoard.id.toString())
+                sendMessageWithBoardUpdate({
+                    id: context.currentBoard.id,
+                    title: context.currentBoard.title,
+                    users: updatedUserList,
+                    cardLists: context.currentBoard.cardLists,
+                    owner: context.currentBoard.owner,
+                    imagePath: context.currentBoard.imagePath})
             }
 
             toast.success("User added");

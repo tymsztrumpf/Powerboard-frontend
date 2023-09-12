@@ -5,9 +5,8 @@ import {BoardContext} from "../context/BoardContext";
 import {toast} from "react-toastify";
 import AddNewCard from "./AddNewCard";
 import {CardListApi} from "../api/CardListApi";
-import {CardResponse} from "../api/models/CardResponse";
 import SortableCard from "./SortableCard";
-import {sendMessage} from "../message/MessageSender";
+import {sendMessageWithBoardUpdate} from "../message/MessageSender";
 interface Props {
     cardList: CardListResponse
 }
@@ -21,7 +20,6 @@ const CardList = ({ cardList }: Props) => {
     const handleHeaderClick = () => {
         setIsEditing(true);
     };
-    // console.log(cards)
     const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setNewTitle(event.target.value);
     };
@@ -43,7 +41,14 @@ const CardList = ({ cardList }: Props) => {
                     ...context.currentBoard,
                     cardLists: updatedCardList,
                 });
-                sendMessage(context.currentBoard.id.toString())
+
+                sendMessageWithBoardUpdate({
+                    id: context.currentBoard.id,
+                    title: context.currentBoard.title,
+                    users: context.currentBoard.users,
+                    cardLists: updatedCardList,
+                    owner: context.currentBoard.owner,
+                    imagePath: context.currentBoard.imagePath})
             }
             toast.success("Card title updated");
         } catch (error) {
