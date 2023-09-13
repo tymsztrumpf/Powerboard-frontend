@@ -1,5 +1,7 @@
 # Powerboard
-Kanban board web application
+* Kanban board web application.
+* Monolith REST-API.
+* Real-time changes for multiple users working on same board.
 ## Goal
 Powerboard was created as a 'skill showcase' app and hopefully will help me land my first job as a Java developer.
 ## Technologies
